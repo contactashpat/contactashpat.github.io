@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loupe — Privacy Policy</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      margin: 0;
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1f2430;
+      background: #fafafa;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { color: #e4e4e7; background: #131316; }
+      a { color: #93c5fd; }
+    }
+    header {
+      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+      color: white;
+      padding: 40px 24px;
+    }
+    header .wrap, main { max-width: 720px; margin: 0 auto; }
+    header h1 { margin: 0 0 4px; font-size: 28px; }
+    header p { margin: 0; opacity: 0.9; }
+    main { padding: 32px 24px 64px; }
+    h2 { margin-top: 36px; font-size: 20px; }
+    code { background: rgba(127,127,127,0.15); padding: 1px 5px; border-radius: 4px; font-size: 0.9em; }
+    a { color: #2563eb; }
+    .meta { font-size: 14px; opacity: 0.75; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Loupe — Privacy Policy</h1>
+      <p>Pixel-perfect UI inspection for Chrome</p>
+    </div>
+  </header>
+  <main>
+    <p class="meta">Effective date: 2026-07-12</p>
+
+    <p>Loupe ("the extension") is a browser extension for pixel-perfect UI inspection. This policy describes what data the extension handles and how.</p>
+
+    <h2>Summary</h2>
+    <p>Loupe collects <strong>no personal data, no analytics, and no telemetry</strong>. Nothing you do with the extension is transmitted to the developer or to any third party, except the two optional integrations described below, which only ever run at your explicit request and with credentials you supply yourself.</p>
+
+    <h2>Data storage</h2>
+    <ul>
+      <li>All extension state (active tool, grid settings, recent colors, per-tab on/off state) is stored <strong>locally in your browser</strong> using Chrome's extension storage. Session-scoped state is deleted automatically when the browser closes.</li>
+      <li>If you use the optional <strong>Figma comparison</strong> feature, the Figma personal access token you enter is stored in Chrome's local extension storage on your device only.</li>
+      <li>If you use the optional <strong>AI explanation</strong> feature, the Anthropic API key you enter is stored in Chrome's local extension storage on your device only.</li>
+      <li>Tokens are never transmitted anywhere except to the API they belong to (see below). You can delete them at any time from the extension's Design panel, or by removing the extension.</li>
+    </ul>
+
+    <h2>Network requests</h2>
+    <p>Loupe makes network requests only in these cases, always initiated by you:</p>
+    <ul>
+      <li><strong>api.figma.com</strong> — when you connect your Figma account and fetch a frame for design comparison, using your own Figma personal access token.</li>
+      <li><strong>api.anthropic.com</strong> — when you request an AI explanation of a design difference, using your own Anthropic API key. The request contains only the CSS/layout difference data needed for the explanation.</li>
+    </ul>
+    <p>No other network requests are made. Page content you inspect is processed entirely on your device.</p>
+
+    <h2>Permissions</h2>
+    <ul>
+      <li><strong>Access to websites (<code>&lt;all_urls&gt;</code>)</strong> — required so the inspection overlays (box model, rulers, measurements) can run on whatever page you choose to inspect. Loupe does nothing on a page until you enable it for that tab.</li>
+      <li><strong><code>debugger</code></strong> — used exclusively for the Responsive Mode device emulation (viewport, touch, and user-agent emulation on a preview tab you open). Chrome displays a visible notice while this is active, and the session ends when you exit the preview or close the tab.</li>
+      <li><strong><code>tabs</code>, <code>storage</code>, <code>sidePanel</code></strong> — used for per-tab enablement, saving your settings locally, and showing the inspection side panel.</li>
+    </ul>
+
+    <h2>Data sharing and sale</h2>
+    <p>Loupe does not collect, sell, share, or transfer any user data to anyone.</p>
+
+    <h2>Changes</h2>
+    <p>Any material change to this policy will be published at this URL with an updated effective date.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy: <a href="mailto:contactashpat@gmail.com">contactashpat@gmail.com</a></p>
+  </main>
+</body>
+</html>
