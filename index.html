@@ -3,42 +3,339 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Loupe — Pixel-Perfect UI Inspection</title>
+  <title>Loupe — Pixel-Perfect UI Inspection for Chrome</title>
+  <meta name="description" content="Loupe is a Chrome extension for designers and front-end developers: inspect box models and CSS, measure between elements, overlay layout grids, pick colors, preview at device sizes, and diff your DOM against Figma.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233B82F6'/%3E%3Cstop offset='1' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3Cline x1='21' y1='21' x2='28' y2='28' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
-    :root { color-scheme: light dark; }
+    :root {
+      color-scheme: light dark;
+      --blue: #3B82F6;
+      --violet: #8B5CF6;
+      --grad: linear-gradient(135deg, var(--blue), var(--violet));
+      --bg: #fafafa;
+      --fg: #18181b;
+      --muted: #52525b;
+      --card: #ffffff;
+      --border: #e4e4e7;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101014;
+        --fg: #f4f4f5;
+        --muted: #a1a1aa;
+        --card: #18181d;
+        --border: #2a2a31;
+      }
+    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: white;
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-      text-align: center;
+      font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
     }
-    main { padding: 32px; }
-    h1 { font-size: 44px; margin: 0 0 8px; }
-    p { margin: 0 0 28px; opacity: 0.92; }
-    a {
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      background: var(--grad);
+      color: white;
+      text-align: center;
+      padding: 88px 24px 96px;
+    }
+    .hero .badge {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 999px;
+      padding: 4px 14px;
+      margin-bottom: 22px;
+      opacity: 0.95;
+    }
+    .hero h1 { font-size: clamp(40px, 7vw, 58px); margin: 0 0 12px; letter-spacing: -0.02em; }
+    .hero .tagline {
+      font-size: clamp(18px, 2.6vw, 22px);
+      max-width: 640px;
+      margin: 0 auto 34px;
+      opacity: 0.94;
+    }
+    .hero .cta a, .hero .cta span {
+      display: inline-block;
+      border-radius: 10px;
+      padding: 12px 22px;
+      margin: 6px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .cta .primary {
+      background: white;
+      color: #4338ca;
+    }
+    .cta .secondary {
       color: white;
       border: 1px solid rgba(255,255,255,0.6);
-      border-radius: 8px;
-      padding: 10px 18px;
-      margin: 0 6px;
-      text-decoration: none;
-      display: inline-block;
     }
-    a:hover { background: rgba(255,255,255,0.15); }
+    .cta .secondary:hover { background: rgba(255,255,255,0.15); }
+    .hero .kbd-hint { margin-top: 26px; font-size: 14px; opacity: 0.85; }
+    .hero kbd {
+      font: 600 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 6px;
+      padding: 3px 7px;
+    }
+
+    section { padding: 64px 0; }
+    section h2 {
+      font-size: 30px;
+      letter-spacing: -0.01em;
+      margin: 0 0 8px;
+      text-align: center;
+    }
+    section .sub {
+      text-align: center;
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 40px;
+    }
+
+    /* Features */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+    .card h3 {
+      font-size: 17px;
+      margin: 0 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p { margin: 0; font-size: 15px; color: var(--muted); }
+    .pro-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: white;
+      background: var(--grad);
+      border-radius: 999px;
+      padding: 2px 9px;
+    }
+
+    /* Pricing */
+    .pricing { background: color-mix(in srgb, var(--card) 60%, var(--bg)); border-block: 1px solid var(--border); }
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+    .plan {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+    }
+    .plan.featured { border: 2px solid var(--violet); position: relative; }
+    .plan.featured::before {
+      content: "7-day free trial";
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--grad);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 3px 14px;
+      white-space: nowrap;
+    }
+    .plan h3 { margin: 0 0 4px; font-size: 20px; }
+    .plan .price { font-size: 34px; font-weight: 700; margin: 10px 0 2px; }
+    .plan .price small { font-size: 15px; font-weight: 500; color: var(--muted); }
+    .plan .alt-prices { font-size: 14px; color: var(--muted); margin: 0 0 18px; }
+    .plan ul { margin: 0; padding: 0 0 0 2px; list-style: none; font-size: 15px; }
+    .plan li { padding: 5px 0 5px 26px; position: relative; }
+    .plan li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .plan .note { margin-top: auto; padding-top: 18px; font-size: 13px; color: var(--muted); }
+    .plan .contact-btn {
+      display: inline-block;
+      margin-top: auto;
+      align-self: flex-start;
+      background: var(--grad);
+      color: white;
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 10px;
+      padding: 10px 20px;
+      text-decoration: none;
+      text-align: center;
+    }
+    .plan .contact-btn + .note { margin-top: 12px; }
+    .plan ul { margin-bottom: 18px; }
+
+    /* Privacy */
+    .privacy p { max-width: 680px; margin: 0 auto; text-align: center; color: var(--muted); }
+    .privacy a { color: var(--blue); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 34px 24px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer .links { margin-bottom: 8px; }
+    footer .links a { margin: 0 10px; }
   </style>
 </head>
 <body>
-  <main>
+
+  <header class="hero">
+    <span class="badge">Chrome extension</span>
     <h1>Loupe</h1>
-    <p>Pixel-perfect UI inspection, measuring &amp; Figma diffing — as a Chrome extension.</p>
-    <nav>
-      <a href="https://github.com/contactashpat/loupe">GitHub</a>
-      <a href="/loupe/privacy/">Privacy Policy</a>
+    <p class="tagline">Pixel-perfect UI inspection for designers and front-end developers. Inspect, measure, and compare any web page against your designs — right in the browser.</p>
+    <nav class="cta">
+      <span class="primary">Coming soon to the Chrome&nbsp;Web&nbsp;Store</span>
+      <a class="secondary" href="mailto:contactashpat@gmail.com">Contact</a>
     </nav>
-  </main>
+    <p class="kbd-hint">Enable on any tab with one click or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></p>
+  </header>
+
+  <section class="wrap" id="features">
+    <h2>Everything you need to ship pixel-perfect UI</h2>
+    <p class="sub">A full inspection toolkit that runs entirely in your browser — no setup, no accounts, no data leaving your machine.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Inspect</h3>
+        <p>Hover any element for its selector, box model, computed CSS, and ancestry. Screenshot it to PNG or copy its styles as a CSS rule.</p>
+      </div>
+      <div class="card">
+        <h3>Measure distances</h3>
+        <p>Click one element, hover another — see exact pixel distances between any two elements, live.</p>
+      </div>
+      <div class="card">
+        <h3>Layout grid &amp; rulers</h3>
+        <p>Overlay a configurable column/gutter/margin grid, plus pixel rulers along the viewport edges.</p>
+      </div>
+      <div class="card">
+        <h3>Color picker</h3>
+        <p>A live magnifier samples the exact pixel under your cursor. Build a palette with hex/RGB/HSL, CSS-variable matches, and a WCAG contrast checker.</p>
+      </div>
+      <div class="card">
+        <h3>Xray &amp; find</h3>
+        <p>Outline the page's full element structure at a glance, or find elements by text or CSS selector and cycle through matches.</p>
+      </div>
+      <div class="card">
+        <h3>Responsive mode</h3>
+        <p>Preview any URL with true device emulation — viewport, touch, and user agent — in a real tab, so login and SSO flows keep working.</p>
+      </div>
+      <div class="card">
+        <h3>Figma compare <span class="pro-tag">PRO</span></h3>
+        <p>Anchor a Figma frame to your live DOM and get a per-element diff heatmap with severity grading and design-token hints.</p>
+      </div>
+      <div class="card">
+        <h3>Breakpoint batch compare <span class="pro-tag">PRO</span></h3>
+        <p>Compare one Figma frame per breakpoint: Loupe reflows the page to each width and tabulates the differences.</p>
+      </div>
+      <div class="card">
+        <h3>Accessibility audit <span class="pro-tag">PRO</span></h3>
+        <p>Page-wide scan for WCAG contrast failures, missing alt text, small tap targets, unlabeled fields, and heading-order issues.</p>
+      </div>
+      <div class="card">
+        <h3>AI fix suggestions &amp; QA reports <span class="pro-tag">PRO</span></h3>
+        <p>Optional AI-written fix suggestions using your own Anthropic API key, and one-click export of a standalone QA report.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <h2>Simple pricing</h2>
+      <p class="sub">The inspector toolkit is free forever. Loupe Pro adds design comparison, auditing, and reporting — with a 7-day free trial.</p>
+      <div class="plans">
+        <div class="plan">
+          <h3>Free</h3>
+          <div class="price">$0</div>
+          <p class="alt-prices">forever</p>
+          <ul>
+            <li>Element inspector &amp; xray</li>
+            <li>Distance measuring</li>
+            <li>Layout grid &amp; page rulers</li>
+            <li>Color picker with contrast checker</li>
+            <li>Find element</li>
+            <li>Responsive device preview</li>
+          </ul>
+          <p class="note">No account needed. Free forever.</p>
+        </div>
+        <div class="plan featured">
+          <h3>Pro</h3>
+          <div class="price">$8<small>/month</small></div>
+          <p class="alt-prices">or $59/year &middot; or $129 once for lifetime access</p>
+          <ul>
+            <li>Everything in Free</li>
+            <li>Figma design-vs-DOM comparison</li>
+            <li>Breakpoint batch compare</li>
+            <li>Accessibility audit</li>
+            <li>AI fix suggestions (your own API key)</li>
+            <li>QA report export</li>
+          </ul>
+          <p class="note">7-day free trial &middot; payments securely processed by Stripe via ExtensionPay &middot; cancel anytime</p>
+        </div>
+        <div class="plan">
+          <h3>Enterprise</h3>
+          <div class="price">Custom</div>
+          <p class="alt-prices">for teams &amp; companies</p>
+          <ul>
+            <li>Everything in Pro</li>
+            <li>Volume licensing for your team</li>
+            <li>Invoice billing</li>
+            <li>Priority email support</li>
+          </ul>
+          <a class="contact-btn" href="mailto:contactashpat@gmail.com?subject=Loupe%20Enterprise">Contact us</a>
+          <p class="note">Tell us your team size and we'll put together a quote.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="privacy wrap" id="privacy">
+    <h2>Private by design</h2>
+    <p>Everything runs locally in your browser — no analytics, no tracking, no inspection data ever leaves your machine. Figma and Anthropic tokens are optional, stored on-device, and sent only to the API you connect them to. Read the full <a href="/loupe/privacy/">privacy policy</a>.</p>
+  </section>
+
+  <footer>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="/loupe/privacy/">Privacy Policy</a>
+      <a href="mailto:contactashpat@gmail.com">contactashpat@gmail.com</a>
+    </div>
+    <div>&copy; 2026 Ash Pat &middot; Loupe — Pixel-Perfect UI Inspection</div>
+  </footer>
+
 </body>
 </html>
