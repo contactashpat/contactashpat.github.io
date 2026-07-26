@@ -68,6 +68,7 @@
     <ul>
       <li><strong>api.figma.com</strong> — when you connect your Figma account and fetch a frame for design comparison, using your own Figma personal access token.</li>
       <li><strong>api.anthropic.com</strong> — when you request an AI explanation of a design difference, using your own Anthropic API key. The request contains only what is needed for the explanation: the element's CSS selector and label, the matched Figma layer name, and the differing CSS property values. No page text, screenshots, or full page source are sent.</li>
+      <li><strong>Your team's own servers (Design System Profiles)</strong> — if you import a design-system profile that declares an update URL, Loupe re-fetches that profile JSON from that URL (a plain GET, no user data attached) about once a day to stay current. If the profile declares a reporting endpoint and you click <strong>"Send to team"</strong> after an audit, the audit result is POSTed to that endpoint: rule findings (CSS selectors, offending class names, colour values), the page URL, the profile id, and the extension version — never tokens, API keys, cookies, or page text. Reports are <strong>only ever sent on your explicit click</strong>, and both URLs are declared by the profile <em>you</em> imported — Loupe operates no server and receives nothing.</li>
     </ul>
     <p>No other network requests are made, except license verification (below). Page content you inspect is processed entirely on your device.</p>
 
@@ -79,6 +80,7 @@
       <li><strong>Access to websites (<code>&lt;all_urls&gt;</code>)</strong> — required so the inspection overlays (box model, rulers, measurements) can run on whatever page you choose to inspect. Loupe does nothing on a page until you enable it for that tab.</li>
       <li><strong><code>debugger</code></strong> — used exclusively for device emulation: Responsive Mode (viewport, touch, and user-agent emulation applied to the tab you choose) and breakpoint comparison (temporarily reflowing the page to each breakpoint width). Chrome displays a visible notice while this is active, and the session ends when you exit. No page data is read through the debugger.</li>
       <li><strong><code>tabs</code>, <code>storage</code>, <code>sidePanel</code></strong> — used for per-tab enablement, saving your settings locally, and showing the inspection side panel.</li>
+      <li><strong><code>alarms</code></strong> — schedules the daily design-system profile refresh described under "Network requests". No data leaves your device on that schedule beyond the plain GET of the profile URL you configured.</li>
     </ul>
 
     <h2>Data sharing and sale</h2>
