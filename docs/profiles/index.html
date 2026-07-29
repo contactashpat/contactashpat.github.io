@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Authoring a Design System Profile — Loupe</title>
+  <meta name="description" content="How to create the design-system profile JSON that teaches Loupe your tokens, components, theme axes, and lint rules — and how to distribute it to your team.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233B82F6'/%3E%3Cstop offset='1' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3Cline x1='21' y1='21' x2='28' y2='28' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --blue: #3B82F6;
+      --violet: #8B5CF6;
+      --grad: linear-gradient(135deg, var(--blue), var(--violet));
+      --bg: #fafafa;
+      --fg: #18181b;
+      --muted: #52525b;
+      --card: #ffffff;
+      --border: #e4e4e7;
+      --code-bg: #f4f4f5;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #101014;
+        --fg: #f4f4f5;
+        --muted: #a1a1aa;
+        --card: #18181d;
+        --border: #2a2a31;
+        --code-bg: #1e1e24;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16.5px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+    }
+    header {
+      background: var(--grad);
+      color: white;
+      padding: 44px 24px 48px;
+    }
+    header .wrap { max-width: 780px; margin: 0 auto; }
+    header a.home {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      opacity: 0.9;
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 999px;
+      padding: 3px 12px;
+    }
+    header h1 { font-size: clamp(26px, 4.5vw, 38px); margin: 14px 0 8px; letter-spacing: -0.02em; }
+    header p { margin: 0; opacity: 0.94; max-width: 640px; }
+
+    main { max-width: 780px; margin: 0 auto; padding: 40px 24px 72px; }
+    main h2 { font-size: 26px; letter-spacing: -0.01em; margin: 44px 0 10px; }
+    main h3 { font-size: 19px; margin: 30px 0 8px; }
+    main p, main li { color: var(--fg); }
+    main .lede { font-size: 18px; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+    code {
+      font: 0.92em ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 1px 5px;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      line-height: 1.55;
+    }
+    pre code { background: none; border: none; padding: 0; font-size: 13.5px; }
+    .c { color: var(--muted); } /* comment tint in code samples */
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14.5px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      display: block;
+      overflow-x: auto;
+    }
+    th, td { padding: 8px 14px; border-top: 1px solid var(--border); text-align: left; vertical-align: top; }
+    thead th { border-top: none; background: color-mix(in srgb, var(--card) 60%, var(--bg)); }
+
+    .note {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 18px 0;
+      font-size: 15px;
+    }
+    ol li, ul li { margin: 5px 0; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 32px 24px 44px;
+      border-top: 1px solid var(--border);
+    }
+    footer a { margin: 0 10px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="home" href="/">← Loupe</a>
+    <h1>Authoring a Design System Profile</h1>
+    <p>A profile is a single JSON file that teaches Loupe your design system — tokens, components, theme axes, and lint rules. This is the complete reference for building one.</p>
+  </div>
+</header>
+
+<main>
+  <p class="lede">With a profile imported and bound to your app's origin (panel → <strong>DS</strong> tab), every developer on your team gets:</p>
+  <ul>
+    <li><strong>Element Tokens view</strong> (free) — inspect any element and see which token each property resolves to, with raw values, primitives, and deprecated aliases flagged.</li>
+    <li><strong>Component inventory</strong> (free, <code>O</code>) — every design-system component on the page, plus native <code>button</code>/<code>input</code>/<code>select</code>/<code>textarea</code> controls that <em>aren't</em> from the design system.</li>
+    <li><strong>Lint audit</strong> (Pro, <code>L</code>) — page-wide violations of your token rules, with fix suggestions.</li>
+  </ul>
+  <p>The profile is a file <strong>you</strong> distribute (internal URL, repo file, chat) — Loupe never bundles or uploads it. Developers import it once per origin in the <strong>DS</strong> panel tab.</p>
+
+  <h2>1. The file at a glance</h2>
+<pre><code>{
+  "schemaVersion": 1,
+  "id": "acme",                     <span class="c">// short stable id — the storage key</span>
+  "name": "Acme Design System",     <span class="c">// display name shown in the panel</span>
+  "generatedAt": "2026-07-01T00:00:00.000Z",
+
+  "detect": {                       <span class="c">// optional "this page uses Acme" heuristics</span>
+    "cssVars": ["--acme-bg-surface"],
+    "slotAttr": "data-part"
+  },
+
+  "components": {
+    "slotAttr": "data-part",        <span class="c">// the attribute your components render on every part</span>
+    "variantAttrs": ["data-size", "data-active"],
+    "runtimeAttrs": ["data-state"]  <span class="c">// attrs added by underlying libs (Radix, base-ui…)</span>
+  },
+
+  "themeAxes": [
+    { "id": "dark", "label": "Dark mode", "kind": "class", "name": "dark", "darkDiff": true },
+    { "id": "brand", "label": "Brand", "kind": "attr", "name": "data-brand",
+      "values": ["consumer", "enterprise"] }
+  ],
+
+  "varNamespaces": {
+    "semantic":  ["--acme-bg-", "--acme-text-", "--acme-stroke-"],
+    "primitive": ["--acme-grey-", "--acme-blue-", "--acme-space-"]
+  },
+
+  "typography": {
+    "utilities": ["acme-label-", "acme-body-", "acme-heading-"],
+    "discouragedTextSizes": true    <span class="c">// flag raw text-sm/text-lg where your scale exists</span>
+  },
+
+  "ignoreSelectors": ["#third-party-chat"],  <span class="c">// subtrees the lint audit skips</span>
+
+  "tokens": [ <span class="c">/* see §3 — the bulk of the file */</span> ],
+
+  "lint":   [ <span class="c">/* see §4 — rule configs */</span> ]
+}</code></pre>
+  <p>Hard limits enforced at import: <strong>512&nbsp;KB</strong> file size, <strong>2,000 tokens</strong>, <code>schemaVersion: 1</code>. Validation errors are shown verbatim in the import UI, so a broken file fails loudly, not silently.</p>
+
+  <h2>2. Field reference</h2>
+
+  <h3><code>id</code>, <code>name</code>, <code>generatedAt</code></h3>
+  <p><code>id</code> is the storage key — keep it stable across regenerations or users will accumulate stale copies (<code>^[a-z0-9][a-z0-9-_]{0,63}$</code>, case-insensitive). <code>name</code> appears throughout the panel. <code>generatedAt</code> should come from your token pipeline so staleness is diagnosable.</p>
+
+  <h3><code>detect</code> (optional)</h3>
+  <p>Presence heuristics. If <strong>any</strong> listed CSS var resolves on <code>document.documentElement</code>, or any element matches <code>[slotAttr]</code>, Loupe shows a "this page looks like it uses &lt;name&gt;" banner on unbound pages. Pick one or two vars that exist on every page of every consumer app.</p>
+
+  <h3><code>components</code></h3>
+  <ul>
+    <li><code>slotAttr</code> — the data attribute every component part renders (e.g. <code>data-part="button"</code>). This must be a <strong>documented contract</strong> of your library, not an implementation detail: the component inventory, the lookalike detector, and the lint audit's "inside the design system" exemption all rely on it. If your library doesn't render such an attribute, add one before authoring a profile — without it only the token features work.</li>
+    <li><code>variantAttrs</code> — attributes your own components write (<code>data-size</code>, <code>data-active</code>, …); shown as variant histograms in the inventory.</li>
+    <li><code>runtimeAttrs</code> — attributes added at runtime by your headless-UI layer (<code>data-state</code>, <code>data-side</code>, …); listed so tooling can display them, never required.</li>
+  </ul>
+
+  <h3><code>themeAxes</code></h3>
+  <p>One entry per independent theme mechanism on <code>&lt;html&gt;</code>:</p>
+  <table>
+    <thead><tr><th>kind</th><th>name</th><th>matches</th></tr></thead>
+    <tbody>
+      <tr><td><code>class</code></td><td><code>dark</code></td><td><code>&lt;html class="dark"&gt;</code></td></tr>
+      <tr><td><code>attr</code></td><td><code>data-brand</code></td><td><code>&lt;html data-brand="enterprise"&gt;</code></td></tr>
+    </tbody>
+  </table>
+  <p>Loupe uses these to classify per-theme token values when reading your stylesheets. Mark exactly one axis <code>darkDiff: true</code> — the one the dark-mode diff should toggle.</p>
+
+  <h3><code>varNamespaces</code></h3>
+  <p>Prefix lists that classify any CSS custom property found on the page:</p>
+  <ul>
+    <li><code>semantic</code> — theme-aware tokens; the ones you <em>want</em> people using.</li>
+    <li><code>primitive</code> — raw ramps/scales with <strong>no dark-mode override</strong>; usage is flagged as an error.</li>
+  </ul>
+  <p>Everything else is <code>unknown</code> (reported as raw). Prefixes match with <code>startsWith</code>, so include the leading <code>--</code> and the trailing <code>-</code> where applicable.</p>
+
+  <h3><code>typography</code> (optional)</h3>
+  <p><code>utilities</code> are your type-scale class prefixes. <code>discouragedTextSizes: true</code> enables the <code>raw-text-size</code> lint rule (flags <code>text-xs</code>…<code>text-9xl</code>).</p>
+
+  <h3><code>ignoreSelectors</code> (optional)</h3>
+  <p>CSS selectors whose <strong>subtrees</strong> the lint audit and the component scan skip — third-party embeds, chat widgets, cookie banners. Invalid selectors are ignored safely.</p>
+  <div class="note">A useful team convention: declare <code>"ignoreSelectors": ["[data-ds-exception]"]</code> and have developers mark <em>consciously accepted</em> exceptions in their markup (<code>&lt;button data-ds-exception="palette-trigger"&gt;…</code>). The exception is then visible in the DOM, reviewable in code review, and excluded from audits — instead of being re-triaged on every scan.</div>
+
+  <h2>3. <code>tokens[]</code></h2>
+  <p>One entry per design token. This drives the Tokens view's reverse lookup and the deprecated-alias lint rule.</p>
+<pre><code>{
+  "cssVar": "--acme-bg-surface",   <span class="c">// the custom property; null for class-only aliases</span>
+  "utility": "bg-surface",         <span class="c">// the utility class consumers write; null if none</span>
+  "category": "bg",                <span class="c">// free-form grouping: bg | text | stroke | icon | …</span>
+  "role": "surface",               <span class="c">// optional; mirrors your token naming levels</span>
+  "state": "default",              <span class="c">// optional</span>
+  "light": "#ffffff",              <span class="c">// resolved hex per theme — REQUIRED for reverse lookup</span>
+  "dark":  "#1d1d1d",
+  "description": "Default page surface"   <span class="c">// optional; shown as context</span>
+}</code></pre>
+  <p>Deprecated aliases (old names you're migrating away from) additionally carry:</p>
+<pre><code>{
+  "cssVar": null,                  <span class="c">// class-only alias — no custom property of its own</span>
+  "utility": "bg-canvas",          <span class="c">// the OLD class name to flag</span>
+  "category": "legacy",
+  "light": null, "dark": null,
+  "deprecated": true,
+  "replacement": { "utility": "bg-surface" }   <span class="c">// what the lint suggestion names</span>
+}</code></pre>
+  <p>Rules of thumb:</p>
+  <ul>
+    <li>Every token needs <code>cssVar</code> <strong>or</strong> <code>utility</code> (both is best).</li>
+    <li>Ship <strong>both hex values</strong>. The page's own CSS is always ground truth for current values, but the profile hexes are the fallback when stylesheets are cross-origin, and they power exact colour → token matching.</li>
+    <li><strong>Generate, don't hand-write.</strong> Derive this array from the same pipeline that builds your CSS (style-dictionary output, a <code>tokens.json</code> manifest, etc.): keep a hand-authored base file holding everything in §2, and merge your generated token list into it on every release.</li>
+  </ul>
+
+  <h2>4. <code>lint[]</code></h2>
+  <p>Rule <em>configs</em> — the implementations live in Loupe, so a profile can only select, parameterise, and set severity, never inject code:</p>
+<pre><code>[
+  { "id": "raw-color",         "severity": "error",   "enabled": true },
+  { "id": "primitive-token",   "severity": "error",   "enabled": true },
+  { "id": "raw-spacing",       "severity": "error",   "enabled": true },
+  { "id": "density-arbitrary", "severity": "error",   "enabled": true },
+  { "id": "hsl-var-wrap",      "severity": "error",   "enabled": true },
+  { "id": "deprecated-alias",  "severity": "warning", "enabled": true },
+  { "id": "raw-text-size",     "severity": "warning", "enabled": true }
+]</code></pre>
+  <table>
+    <thead><tr><th>id</th><th>flags</th><th>notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>raw-color</code></td><td>hex / <code>rgb()</code> / <code>hsl()</code> / <code>oklch()</code> literals in class arbitrary values or inline styles</td><td><code>var(--…)</code> usages are exempt</td></tr>
+      <tr><td><code>primitive-token</code></td><td><code>var(--&lt;primitive prefix&gt;…)</code> in arbitrary values or inline styles</td><td>driven by <code>varNamespaces.primitive</code></td></tr>
+      <tr><td><code>raw-spacing</code></td><td>Tailwind numeric spacing scale (<code>px-3.5</code>, <code>gap-2</code>, <code>m-4</code>)</td><td><strong>exempt inside</strong> <code>[slotAttr]</code> subtrees — your own components may use raw scale internally</td></tr>
+      <tr><td><code>density-arbitrary</code></td><td>the literal <code>[var(--density-…)]</code> class form</td><td>for systems whose build drops that form silently</td></tr>
+      <tr><td><code>hsl-var-wrap</code></td><td><code>hsl(var(--…))</code></td><td>invalid once tokens resolve to hex</td></tr>
+      <tr><td><code>deprecated-alias</code></td><td>any <code>tokens[]</code> entry with <code>deprecated: true</code>, matched by <code>utility</code> (variant prefixes like <code>hover:</code> are handled)</td><td>suggestion names <code>replacement.utility</code></td></tr>
+      <tr><td><code>raw-text-size</code></td><td><code>text-xs</code> … <code>text-9xl</code></td><td>only when <code>typography.discouragedTextSizes</code></td></tr>
+    </tbody>
+  </table>
+  <p>Disable anything that doesn't apply to your system (<code>"enabled": false</code>) rather than deleting the entry — it documents the decision.</p>
+
+  <h2>4b. Team features (schema v2)</h2>
+  <p>Setting <code>"schemaVersion": 2</code> unlocks four optional fields for organisation-wide rollouts:</p>
+<pre><code>{
+  "origins": ["https://app.acme.com", "https://admin.acme.com"],
+  "updateUrl": "https://ds.acme.internal/loupe-profile.json",
+  "reportWebhook": "https://ds.acme.internal/loupe-reports",
+  "license": { <span class="c">/* signed licence blob issued with your commercial licence */</span> }
+}</code></pre>
+  <ul>
+    <li><strong><code>origins</code></strong> — auto-bound when the profile is imported or refreshed; developers import once and every listed app origin is covered (their manual bindings always win).</li>
+    <li><strong><code>updateUrl</code></strong> (https only) — Loupe re-fetches the profile from here about once a day and on browser start, replacing the stored copy only when it validates, keeps the same <code>id</code>, and has a newer <code>generatedAt</code>. Publish the profile at this URL from your token pipeline and every install stays current with token releases.</li>
+    <li><strong><code>reportWebhook</code></strong> (https only) — adds an explicit <strong>"Send to team"</strong> button after lint and dark-mode-diff runs. The result JSON (findings, page URL, profile id, extension version — never tokens or credentials) is POSTed to <em>your</em> endpoint, only on the user's click. Point it at anything that accepts JSON: a lambda, Splunk HEC, a spreadsheet hook.</li>
+    <li><strong><code>license</code></strong> — a signed org licence that unlocks Loupe Pro for everyone using this profile on your origins, with no individual accounts. Licences are issued as part of a commercial agreement — <a href="mailto:contactashpat@gmail.com?subject=Loupe%20Team%20Licensing">contact the developer for team licensing</a>. Embed the blob verbatim; it survives profile regeneration because the signature covers only the licence fields.</li>
+  </ul>
+
+  <h2>5. Distributing and updating</h2>
+  <ul>
+    <li><strong>Host it on an internal URL</strong> (any static host your developers can reach; CORS headers are not required — Loupe fetches from the extension background). Developers use <em>Import → Fetch</em>. Re-fetching after a token release picks up the new values; the same <code>id</code> overwrites in place.</li>
+    <li>Or commit it to your design-system repo and share the file; <em>Import → From file / paste</em>.</li>
+    <li>Regenerate on every token release and bump <code>generatedAt</code>. Keep the profile out of public hosting if your token names/values are internal — the profile is exactly as sensitive as your design-system source.</li>
+  </ul>
+
+  <h2>6. Pre-release checklist</h2>
+  <p>On a page of a real consumer app, after binding the profile:</p>
+  <ol>
+    <li>Inspect a known component → Tokens view names your semantic vars for its colour properties.</li>
+    <li><code>O</code> → the inventory lists your components with plausible counts; inject a raw <code>&lt;button&gt;</code> in DevTools → it appears under "Not from the design system".</li>
+    <li>Seed one violation per enabled lint rule (e.g. <code>class="bg-[#ff0000] px-3.5 old-alias"</code>) → each fires with the right severity and a useful suggestion; the same classes inside one of your components do <strong>not</strong> fire <code>raw-spacing</code>.</li>
+    <li>Toggle your dark axis → re-inspect: resolved values change, token names stay.</li>
+    <li>Check the banner: open an app page <em>without</em> binding → the detect heuristics show the "looks like it uses …" hint.</li>
+  </ol>
+
+</main>
+
+<footer>
+  <div>
+    <a href="/">Loupe home</a>
+    <a href="/loupe/welcome/">Get started</a>
+    <a href="/loupe/privacy/">Privacy Policy</a>
+    <a href="mailto:contactashpat@gmail.com">contactashpat@gmail.com</a>
+  </div>
+  <div>&copy; 2026 Ash Pat &middot; Loupe — Pixel-Perfect UI Inspection</div>
+</footer>
+
+</body>
+</html>
