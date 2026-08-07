@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design system linter for the browser — audit any page against your tokens | Loupe</title>
+  <meta name="description" content="Lint any live page against your design system: raw color literals, primitive tokens with no dark-mode value, rogue spacing, deprecated aliases, and colors that don't respond to dark mode. A Chrome extension that reads the rendered DOM.">
+  <link rel="canonical" href="https://getloupe.org/design-system-linter/">
+  <meta name="keywords" content="design system linter, design token audit, design system compliance, dark mode diff, token linter browser, hardcoded color finder, design system governance, DS lint">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Loupe">
+  <meta property="og:title" content="Design system linter for the browser — audit any page against your tokens">
+  <meta property="og:description" content="Lint any live page against your design system: raw colors, off-scale spacing, deprecated tokens, and colors that ignore dark mode.">
+  <meta property="og:url" content="https://getloupe.org/design-system-linter/">
+  <meta property="og:image" content="https://getloupe.org/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Design system linter for the browser — audit any page against your tokens">
+  <meta name="twitter:description" content="Lint any live page against your design system: raw colors, off-scale spacing, deprecated tokens, and colors that ignore dark mode.">
+  <meta name="twitter:image" content="https://getloupe.org/og.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a design system linter?",
+        "acceptedAnswer": { "@type": "Answer", "text": "A design system linter checks whether a page follows your design system's rules — using tokens instead of raw color/spacing values, avoiding deprecated aliases, and responding correctly to theme changes. Loupe lints the rendered DOM in the browser against a profile of your design system." }
+      },
+      {
+        "@type": "Question",
+        "name": "How is this different from an ESLint plugin?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Source linters see code; Loupe sees what actually rendered. It catches drift that source rules miss — hardcoded colors reaching the DOM through indirection, and colors that don't change when you toggle dark mode — and it works on any page regardless of framework or build." }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233B82F6'/%3E%3Cstop offset='1' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3Cline x1='21' y1='21' x2='28' y2='28' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --blue: #3B82F6; --violet: #8B5CF6;
+      --grad: linear-gradient(135deg, var(--blue), var(--violet));
+      --bg: #fafafa; --fg: #18181b; --muted: #52525b; --card: #ffffff; --border: #e4e4e7;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #101014; --fg: #f4f4f5; --muted: #a1a1aa; --card: #18181d; --border: #2a2a31; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 17px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--fg); }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    header { background: var(--grad); color: white; padding: 64px 24px 72px; text-align: center; }
+    header a.home { color: white; text-decoration: none; font-size: 14px; opacity: 0.9; border: 1px solid rgba(255,255,255,0.45); border-radius: 999px; padding: 3px 12px; }
+    header h1 { font-size: clamp(28px, 5vw, 44px); margin: 18px auto 12px; max-width: 700px; letter-spacing: -0.02em; }
+    header p { margin: 0 auto; max-width: 600px; font-size: clamp(17px, 2.4vw, 20px); opacity: 0.95; }
+    header .cta { margin-top: 30px; }
+    header .cta a { display: inline-block; background: white; color: #4338ca; border-radius: 10px; padding: 12px 22px; text-decoration: none; font-weight: 600; }
+    main { padding: 56px 0 24px; }
+    main h2 { font-size: 26px; letter-spacing: -0.01em; margin: 40px 0 10px; }
+    main h3 { font-size: 19px; margin: 26px 0 6px; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code { font: 0.92em ui-monospace, SFMono-Regular, Menlo, monospace; background: color-mix(in srgb, var(--card) 60%, var(--bg)); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; }
+    ul.checks li { margin: 6px 0; }
+    .faq h3 { margin-bottom: 2px; }
+    .cta-block { text-align: center; background: color-mix(in srgb, var(--card) 60%, var(--bg)); border: 1px solid var(--border); border-radius: 16px; padding: 34px 24px; margin: 48px 0 8px; }
+    .cta-block a.primary { display: inline-block; background: var(--grad); color: white; border-radius: 10px; padding: 13px 26px; text-decoration: none; font-weight: 600; margin-top: 10px; }
+    footer { text-align: center; color: var(--muted); font-size: 14px; padding: 40px 24px 48px; border-top: 1px solid var(--border); margin-top: 40px; }
+    footer a { margin: 0 10px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="home" href="/">← Loupe</a>
+    <h1>Lint any page against your design system — in the browser</h1>
+    <p>Loupe audits the rendered DOM against a profile of your design system and flags raw colors, off-scale spacing, deprecated tokens, and colors that ignore dark mode — with click-to-locate and fix suggestions.</p>
+    <div class="cta"><a href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk">Add to Chrome — free</a></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <p>Source linters check the code you wrote. But design-system drift shows up in what actually <em>rendered</em> — a hardcoded grey that reached the DOM through three layers of indirection, a color that never changes when you toggle dark mode, spacing that skipped the scale. <strong>Loupe</strong> lints the live page against your design system, catching what source rules can't see.</p>
+
+  <h2>What it checks</h2>
+  <ul class="checks">
+    <li><strong>Raw color literals</strong> — hex / <code>rgb()</code> / <code>hsl()</code> / <code>oklch()</code> in class arbitrary values and inline styles</li>
+    <li><strong>Primitive tokens</strong> used directly where a semantic token exists (no dark-mode override)</li>
+    <li><strong>Rogue spacing</strong> — the raw Tailwind numeric scale outside your design-system components</li>
+    <li><strong>Deprecated aliases</strong> — old token names, with the replacement named in the suggestion</li>
+    <li><strong>Dark-mode diff</strong> — toggles your theme axis and flags every color that <em>doesn't respond</em>: hardcoded values invisible to static analysis</li>
+    <li><strong>Raw text sizes</strong> where your type scale should be used</li>
+  </ul>
+
+  <h2>How it works</h2>
+  <p>You teach Loupe your design system once with a <a href="/docs/profiles/">profile</a> — a JSON file listing your tokens (CSS variables + utility classes + light/dark values), component fingerprints, theme axes, and which lint rules to run. Import it in the DS panel, bind it to your app's origin, and press <code>L</code> to lint the page. Results group by severity with click-to-locate; a red/amber overlay marks each finding in place.</p>
+
+  <h2>Built for teams</h2>
+  <p>Profiles are yours to distribute — Loupe never bundles or uploads them. Host one at a URL and it auto-updates daily as your tokens ship. An organisation licence unlocks the Pro audits for everyone using your profile, with no individual accounts, plus optional reporting of findings to your own endpoint and a one-click "AI fix prompt" export for coding agents. See the <a href="/docs/profiles/">authoring guide</a>.</p>
+
+  <h2 class="faq">FAQ</h2>
+  <div class="faq">
+    <h3>How is this different from an ESLint plugin?</h3>
+    <p>Source linters see code; Loupe sees what rendered. It catches hardcoded values that reach the DOM through indirection and colors that ignore dark mode — regardless of framework or build.</p>
+  </div>
+  <div class="faq">
+    <h3>Is it free?</h3>
+    <p>Design-system profiles and the Tokens/Components views are free. The DS Lint audit and dark-mode diff are part of Loupe Pro (7-day free trial); teams can cover everyone with one org licence.</p>
+  </div>
+
+  <div class="cta-block">
+    <div style="font-size:20px;font-weight:600;">Keep your design system honest.</div>
+    <p style="color:var(--muted);max-width:480px;margin:8px auto 0;">Install Loupe, load your profile, and lint any page.</p>
+    <a class="primary" href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk">Add to Chrome — free</a>
+  </div>
+</main>
+
+<footer>
+  <div>
+    <a href="/">Loupe home</a>
+    <a href="/docs/profiles/">Profile guide</a>
+    <a href="/loupe/privacy/">Privacy Policy</a>
+  </div>
+  <div>&copy; 2026 Ash Pat &middot; Loupe — Pixel-Perfect UI Inspection</div>
+</footer>
+
+</body>
+</html>

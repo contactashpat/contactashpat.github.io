@@ -13,6 +13,14 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://getloupe.org/tailwind-class-inspector/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://getloupe.org/design-system-linter/</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://getloupe.org/docs/profiles/</loc>
     <priority>0.6</priority>
   </url>
