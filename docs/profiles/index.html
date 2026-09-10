@@ -283,7 +283,7 @@
     <li><strong><code>origins</code></strong> — auto-bound when the profile is imported or refreshed; developers import once and every listed app origin is covered (their manual bindings always win).</li>
     <li><strong><code>updateUrl</code></strong> (https only) — Loupe re-fetches the profile from here about once a day and on browser start, replacing the stored copy only when it validates, keeps the same <code>id</code>, and has a newer <code>generatedAt</code>. Publish the profile at this URL from your token pipeline and every install stays current with token releases.</li>
     <li><strong><code>reportWebhook</code></strong> (https only) — adds an explicit <strong>"Send to team"</strong> button after lint and dark-mode-diff runs. The result JSON (findings, page URL, profile id, extension version — never tokens or credentials) is POSTed to <em>your</em> endpoint, only on the user's click. Point it at anything that accepts JSON: a lambda, Splunk HEC, a spreadsheet hook.</li>
-    <li><strong><code>license</code></strong> — a signed org licence that unlocks Loupe Pro for everyone using this profile on your origins, with no individual accounts. Licences are issued as part of a commercial agreement — <a href="mailto:contactashpat@gmail.com?subject=Loupe%20Team%20Licensing">contact the developer for team licensing</a>. Embed the blob verbatim; it survives profile regeneration because the signature covers only the licence fields.</li>
+    <li><strong><code>license</code></strong> — a signed org licence that unlocks Loupe Pro for everyone using this profile on your origins, with no individual accounts. Licences are issued as part of a commercial agreement — <a href="mailto:contact@getloupe.org?subject=Loupe%20Team%20Licensing">contact the developer for team licensing</a>. Embed the blob verbatim; it survives profile regeneration because the signature covers only the licence fields.</li>
   </ul>
 
   <h2>5. Distributing and updating</h2>
@@ -310,9 +310,9 @@
     <a href="/">Loupe home</a>
     <a href="/loupe/welcome/">Get started</a>
     <a href="/loupe/privacy/">Privacy Policy</a>
-    <a href="mailto:contactashpat@gmail.com">contactashpat@gmail.com</a>
+    <a href="mailto:contact@getloupe.org">contact@getloupe.org</a>
   </div>
-  <div>&copy; 2026 Ash Pat &middot; Loupe — Pixel-Perfect UI Inspection</div>
+  <div>&copy; 2026 Loupe &middot; Pixel-Perfect UI Inspection</div>
 </footer>
 
 </body>
