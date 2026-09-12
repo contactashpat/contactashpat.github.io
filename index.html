@@ -166,6 +166,31 @@
       padding: 2px 9px;
     }
 
+    /* Shortcuts */
+    .kbd-list {
+      columns: 260px 3;
+      column-gap: 32px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .kbd-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      break-inside: avoid;
+    }
+    .kbd-row .keys { flex: 0 0 auto; white-space: nowrap; }
+    .kbd-row .action { color: var(--muted); font-size: 14px; }
+    .kbd-list kbd {
+      font: 600 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 7px;
+    }
+
     /* Pricing */
     .pricing { background: color-mix(in srgb, var(--card) 60%, var(--bg)); border-block: 1px solid var(--border); }
     .plans {
@@ -257,7 +282,7 @@
       <a class="primary" href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk">Add to Chrome — free</a>
       <a class="secondary" href="mailto:contact@getloupe.org">Contact</a>
     </nav>
-    <p class="kbd-hint">Enable on any tab with one click or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></p>
+    <p class="kbd-hint">Enable on any tab with one click or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> · <a href="#shortcuts" style="color:inherit;text-decoration:underline;">see all shortcuts</a></p>
   </header>
 
   <section class="wrap" id="features">
@@ -304,6 +329,33 @@
         <h3>AI fix suggestions &amp; QA reports <span class="pro-tag">PRO</span></h3>
         <p>Optional AI-written fix suggestions using your own Anthropic API key, and one-click export of a standalone QA report.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="shortcuts">
+    <h2>Every tool is one keypress away</h2>
+    <p class="sub">Work without leaving the keyboard — shortcuts stay active on any page while the dock is visible. Single-letter keys are ignored while you're typing in a field.</p>
+    <div class="kbd-list">
+      <div class="kbd-row"><span class="keys"><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd></span><span class="action">Start / stop Loupe for the current tab</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>L</kbd></span><span class="action">Open the side panel</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>I</kbd></span><span class="action">Inspect</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>X</kbd></span><span class="action">Xray</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>G</kbd></span><span class="action">Layout grid</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>R</kbd></span><span class="action">Page rulers</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>D</kbd></span><span class="action">Measure distances</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>C</kbd></span><span class="action">Color picker</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>F</kbd></span><span class="action">Find element</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>S</kbd></span><span class="action">Tailwind xray</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>O</kbd></span><span class="action">DS components</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>L</kbd></span><span class="action">DS lint <span class="pro-tag">PRO</span></span></div>
+      <div class="kbd-row"><span class="keys"><kbd>M</kbd></span><span class="action">Responsive mode</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>P</kbd></span><span class="action">Toggle side panel</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>Space</kbd></span><span class="action">Pause / resume</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>Q</kbd></span><span class="action">Shutdown current tab</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>H</kbd></span><span class="action">Hide dock</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>&uarr;</kbd> / <kbd>&darr;</kbd></span><span class="action">Walk to parent / child element</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>?</kbd></span><span class="action">Show this list</span></div>
+      <div class="kbd-row"><span class="keys"><kbd>Esc</kbd></span><span class="action">Exit mode</span></div>
     </div>
   </section>
 
@@ -365,6 +417,7 @@
   <footer>
     <div class="links">
       <a href="#features">Features</a>
+      <a href="#shortcuts">Shortcuts</a>
       <a href="#pricing">Pricing</a>
       <a href="/loupe/privacy/">Privacy Policy</a>
       <a href="mailto:contact@getloupe.org">contact@getloupe.org</a>
