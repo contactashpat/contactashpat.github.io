@@ -250,20 +250,62 @@
     }
     .plan .note { margin-top: auto; padding-top: 18px; font-size: 13px; color: var(--muted); }
     .plan .contact-btn {
-      display: inline-block;
+      display: block;
       margin-top: auto;
-      align-self: flex-start;
       background: var(--grad);
       color: white;
       font-weight: 600;
       font-size: 15px;
       border-radius: 10px;
-      padding: 10px 20px;
+      padding: 12px 20px;
       text-decoration: none;
       text-align: center;
+      transition: transform 120ms ease, box-shadow 120ms ease;
     }
+    .plan .contact-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(99,102,241,0.35); }
+    /* Secondary CTA — the free tier shouldn't out-shout the paid ones. */
+    .plan .contact-btn.ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--fg);
+    }
+    .plan .contact-btn.ghost:hover { border-color: var(--violet); box-shadow: none; }
     .plan .contact-btn + .note { margin-top: 12px; }
     .plan ul { margin-bottom: 18px; }
+
+    /* "How buying works" — the Pro purchase happens inside the extension
+       (ExtensionPay ties the licence to your install), so spell the path out
+       instead of leaving a dead end on the pricing card. */
+    .buy-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+    .buy-step { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--muted); }
+    .buy-step .num {
+      flex: 0 0 auto;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: var(--grad);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .buy-step strong { color: var(--fg); display: block; font-size: 15px; margin-bottom: 2px; }
+    .buy-step kbd {
+      font: 600 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 6px;
+    }
 
     /* Privacy */
     .privacy p { max-width: 680px; margin: 0 auto; text-align: center; color: var(--muted); }
@@ -386,6 +428,7 @@
             <li>Find element</li>
             <li>Responsive device preview</li>
           </ul>
+          <a class="contact-btn ghost" href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk">Add to Chrome — free</a>
           <p class="note">No account needed. Free forever.</p>
         </div>
         <div class="plan featured">
@@ -400,7 +443,8 @@
             <li>AI fix suggestions (your own API key)</li>
             <li>QA report export</li>
           </ul>
-          <p class="note">7-day free trial &middot; buy in the extension &middot; payments securely processed by Stripe via ExtensionPay</p>
+          <a class="contact-btn" href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk">Start 7-day free trial</a>
+          <p class="note">No card for the trial. Install Loupe, then hit <strong>Upgrade</strong> in the panel to buy — payments handled by Stripe via ExtensionPay. <a href="#how-to-buy" style="color:inherit;">How it works</a>.</p>
         </div>
         <div class="plan">
           <h3>Team</h3>
@@ -414,6 +458,21 @@
           </ul>
           <a class="contact-btn" href="https://buy.stripe.com/REPLACE_ME">Buy team licence</a>
           <p class="note">Instant delivery — a signed licence file for your design-system profile. Enterprise, invoicing, or questions? <a href="mailto:contact@getloupe.org?subject=Loupe%20Enterprise" style="color:inherit;">Contact us</a>.</p>
+        </div>
+      </div>
+
+      <div class="buy-steps" id="how-to-buy">
+        <div class="buy-step">
+          <span class="num">1</span>
+          <span><strong>Install Loupe</strong>Free from the Chrome Web Store — the whole inspector toolkit works right away, no account.</span>
+        </div>
+        <div class="buy-step">
+          <span class="num">2</span>
+          <span><strong>Open a Pro feature</strong>Press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> on any page, then <kbd>P</kbd> for the panel. The Design tab starts your free trial — no card.</span>
+        </div>
+        <div class="buy-step">
+          <span class="num">3</span>
+          <span><strong>Upgrade when you're sold</strong>One click in the panel, $20 once, yours forever. Your licence follows your email to any browser.</span>
         </div>
       </div>
     </div>
