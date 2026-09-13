@@ -101,7 +101,7 @@
         const text = JSON.stringify(body, null, 2);
         document.getElementById('licenceJson').textContent = text;
         document.getElementById('licenceView').style.display = '';
-        status.innerHTML = `Licensed to <b>${body.org.replace(/</g, '&lt;')}</b> · valid until <b>${body.expires}</b> · unlimited seats (honour system)`;
+        status.innerHTML = `Licensed to <b>${body.org.replace(/</g, '&lt;')}</b> · one-time licence, no expiry · up to 50 people (honour system)`;
         document.getElementById('downloadBtn').onclick = () => {
           const a = document.createElement('a');
           a.href = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
