@@ -318,6 +318,38 @@
       font-size: 14px;
       color: var(--muted);
     }
+    /* Mid-page rating band — a tinted full-width strip so it reads as its
+       own beat between the feature grid and the shortcuts table. */
+    .rate-band {
+      background: linear-gradient(135deg, rgba(59,130,246,0.10), rgba(139,92,246,0.12));
+      border-top: 1px solid rgba(99,102,241,0.18);
+      border-bottom: 1px solid rgba(99,102,241,0.18);
+      padding: 44px 0;
+      text-align: center;
+      margin: 56px 0;
+    }
+    .rate-band h2 { margin: 0 0 8px; }
+    .rate-band p { margin: 0 auto 20px; max-width: 520px; color: var(--muted); }
+    .rate-btn {
+      display: inline-block;
+      background: var(--grad);
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 12px 22px;
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+    .rate-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(99,102,241,0.35); }
+    .hero-rate { margin: 14px 0 0; font-size: 14px; }
+    .hero-rate a {
+      color: #fff; text-decoration: none; opacity: 0.92;
+      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.35);
+      padding: 7px 14px; border-radius: 999px; display: inline-block;
+      transition: background 150ms ease, opacity 150ms ease;
+    }
+    .hero-rate a:hover { background: rgba(255,255,255,0.24); opacity: 1; }
     footer a { color: var(--blue); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
     footer .links { margin-bottom: 8px; }
@@ -334,6 +366,7 @@
       <a class="primary" href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk">Add to Chrome — free</a>
       <a class="secondary" href="mailto:contact@getloupe.org">Contact</a>
     </nav>
+    <p class="hero-rate"><a href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk/reviews">&#9733;&#9733;&#9733;&#9733;&#9733; &nbsp;Already using Loupe? Rate it on the Chrome Web Store</a></p>
     <p class="kbd-hint">Enable on any tab with one click or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> · <a href="#shortcuts" style="color:inherit;text-decoration:underline;">see all shortcuts</a></p>
   </header>
 
@@ -385,6 +418,14 @@
         <h3>AI fix suggestions &amp; QA reports <span class="pro-tag">PRO</span></h3>
         <p>Optional AI-written fix suggestions using your own Anthropic API key, and one-click export of a standalone QA report.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="rate-band" id="rate">
+    <div class="wrap">
+      <h2>Enjoying Loupe?</h2>
+      <p>A quick rating helps other designers and developers find it — and it genuinely makes our day.</p>
+      <a class="rate-btn" href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk/reviews">&#9733;&#9733;&#9733;&#9733;&#9733; &nbsp;Rate Loupe on the Chrome Web Store</a>
     </div>
   </section>
 
@@ -487,12 +528,6 @@
   <section class="privacy wrap" id="privacy">
     <h2>Private by design</h2>
     <p>Everything runs locally in your browser — no analytics, no tracking, no inspection data ever leaves your machine. Figma and Anthropic tokens are optional, stored on-device, and sent only to the API you connect them to. Read the full <a href="/loupe/privacy/">privacy policy</a>.</p>
-  </section>
-
-  <section class="wrap" id="rate" style="text-align:center;">
-    <h2>Enjoying Loupe?</h2>
-    <p class="sub">A quick rating helps other designers and developers find it — and it genuinely makes our day.</p>
-    <a class="contact-btn" href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk/reviews" style="display:inline-block;margin-top:8px;">&#9733;&#9733;&#9733;&#9733;&#9733; &nbsp;Rate Loupe on the Chrome Web Store</a>
   </section>
 
   <footer>
