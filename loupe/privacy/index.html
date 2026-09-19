@@ -14,6 +14,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Loupe — Privacy Policy</title>
+  <script>try{var t=localStorage.getItem("loupe-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
   <style>
     :root { color-scheme: light dark; }
     body {
@@ -23,9 +24,13 @@
       background: #fafafa;
     }
     @media (prefers-color-scheme: dark) {
-      body { color: #e4e4e7; background: #131316; }
-      a { color: #93c5fd; }
+      :root:not([data-theme="light"]) body { color: #e4e4e7; background: #131316; }
+      :root:not([data-theme="light"]) a { color: #93c5fd; }
     }
+    :root[data-theme="dark"] body { color: #e4e4e7; background: #131316; }
+      :root[data-theme="dark"] a { color: #93c5fd; }
+    :root[data-theme="light"] { color-scheme: light; }
+    :root[data-theme="dark"] { color-scheme: dark; }
     header {
       background: linear-gradient(135deg, #3B82F6, #8B5CF6);
       color: white;
@@ -105,5 +110,6 @@
     <h2>Contact</h2>
     <p>Questions about this policy: <a href="mailto:contact@getloupe.org">contact@getloupe.org</a></p>
   </main>
+<script src="/theme.js" defer></script>
 </body>
 </html>
