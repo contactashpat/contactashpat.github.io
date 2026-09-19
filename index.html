@@ -134,6 +134,10 @@
     }
     .cta .secondary:hover { background: rgba(255,255,255,0.15); }
     .hero .kbd-hint { margin-top: 26px; font-size: 14px; opacity: 0.85; }
+    .hero-shot { margin: 40px auto -90px; max-width: 920px; padding: 0 8px; }
+    .hero-shot img { width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 24px 60px rgba(0,0,0,0.45); display: block; }
+    .hero-shot figcaption { font-size: 13px; opacity: 0.8; margin-top: 10px; text-align: center; }
+    @media (max-width: 640px) { .hero-shot { margin-bottom: -40px; } }
     .hero kbd {
       font: 600 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
       background: rgba(255,255,255,0.18);
@@ -378,9 +382,13 @@
     </nav>
     <p class="hero-rate"><a href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk/reviews">&#9733;&#9733;&#9733;&#9733;&#9733; &nbsp;Already using Loupe? Rate it on the Chrome Web Store</a></p>
     <p class="kbd-hint">Enable on any tab with one click or <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> · <a href="#shortcuts" style="color:inherit;text-decoration:underline;">see all shortcuts</a></p>
+    <figure class="hero-shot">
+      <img src="/img/hero-centered-stage.png" alt="Loupe's responsive mode: this site previewed in a centered iPhone-sized frame, with the device controls floating beside it and the tool dock below" width="1280" height="800" />
+      <figcaption>Responsive mode, as it actually looks — a centered device preview with no debugger banner. Real screenshot, v0.8.7.</figcaption>
+    </figure>
   </header>
 
-  <section class="wrap" id="features">
+  <section class="wrap" id="features" style="padding-top:120px">
     <h2>Everything you need to ship pixel-perfect UI</h2>
     <p class="sub">A full inspection toolkit that runs entirely in your browser — no setup, no accounts, no data leaving your machine.</p>
     <div class="grid">
@@ -546,10 +554,12 @@
       <a href="#shortcuts">Shortcuts</a>
       <a href="#pricing">Pricing</a>
       <a href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk/reviews">Rate Loupe &#9733;</a>
+      <a href="/changelog/">Changelog</a>
       <a href="/loupe/privacy/">Privacy Policy</a>
       <a href="mailto:contact@getloupe.org">contact@getloupe.org</a>
     </div>
     <div>&copy; 2026 Loupe &middot; Pixel-Perfect UI Inspection</div>
+    <div style="margin-top:10px;font-size:13px;opacity:0.75">Hand-built as a single HTML file — no framework, no tracking, no cookies. Made by Ash Pat.</div>
   </footer>
 
 <script src="/theme.js" defer></script>

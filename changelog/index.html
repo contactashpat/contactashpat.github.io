@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog — Loupe</title>
+  <meta name="description" content="Every Loupe release, in the developer's own words — features, fixes, and the occasional revert." />
+  <link rel="icon" href="/og.png" />
+  <script>try{var t=localStorage.getItem("loupe-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #fafafa; --fg: #18181b; --muted: #52525b; --card: #ffffff; --border: #e4e4e7; --blue: #3B82F6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { --bg: #101014; --fg: #f4f4f5; --muted: #a1a1aa; --card: #18181d; --border: #2a2a31; }
+    }
+    :root[data-theme="dark"] { --bg: #101014; --fg: #f4f4f5; --muted: #a1a1aa; --card: #18181d; --border: #2a2a31; }
+    :root[data-theme="light"] { color-scheme: light; }
+    :root[data-theme="dark"] { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--fg); }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 80px; }
+    a { color: var(--blue); }
+    h1 { font-size: 34px; margin: 0 0 4px; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); margin: 0 0 36px; }
+    h2 { font-size: 21px; margin: 40px 0 6px; padding-top: 24px; border-top: 1px solid var(--border); }
+    h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 18px 0 6px; }
+    ul { margin: 0; padding-left: 20px; }
+    li { margin: 8px 0; }
+    code { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; font-size: 0.88em; }
+    p { color: var(--muted); }
+    .back { display: inline-block; margin-bottom: 20px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="/">&larr; getloupe.org</a>
+    <h1>Changelog</h1>
+    <p class="sub">Every release, straight from the repo — current version 0.8.7, page generated 2026-09-19.</p>
+<p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
+<p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>0.8.7 — 2026-09-19</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Customizable overlay appearance.</strong> Settings → Overlay appearance opens an editor for how Loupe annotates the page: label size and weight, plus a colour per named role — Selection, Hover target, Measure anchor, Measurements, Crosshair, Guides, Nudge, Nudge ghost — each showing its default and a one-tap reset. Reset-all, Export (JSON to clipboard) and Import (paste or file, validated) included; every edit applies live on the page and persists across browser restarts. Semantic colours stay fixed on purpose: Figma severity bands and Tailwind Xray categories must read the same in every exported report.<li><strong>Ruler bars adapt to the page.</strong> On dark sites the bars flip to a light tint with dark ticks (the dark bars used to disappear); light sites keep the original look. Automatic, based on the page's own background.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>Ruler bars push the page out of their way.</strong> Entering Rulers insets the page by the bar thickness (margin on the root), DevTools-style, so the bars overlap nothing — and the tick scale now aligns exactly with page coordinates (it was previously drawn 18px offset from the content). Hiding the bars (<code>R</code> again) or exiting restores the page precisely; position:fixed page elements can't be shifted by margins, so the bars stay translucent as the fallback for sticky headers.<li><strong>Measurement lines got the classic dimension-line look.</strong> Distance lines now end in double-headed arrows, and the value sits in a light pill with a cyan border and cyan text — legible on any page background — instead of a solid colour block. Sans-serif with tabular numerals.</li>
+</ul>
+<h2>0.8.6 — 2026-09-18</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>More devices.</strong> The responsive device list grows from 9 to 21 presets — recent and legacy iPhones (17 Pro, 15 Pro Max, 11/XR, 13 mini), common Androids (Galaxy A51/71, S8+, Z Fold folded), more tablets (iPad Air, iPad Pro 12.9", Surface Pro 7) and larger desktops (15" laptop, QHD) — grouped into Phones / Tablets / Laptops &amp; desktops in the dropdown. Viewport values match Chrome DevTools' device list.</li>
+</ul>
+<h2>0.8.5 — 2026-09-18 (uploaded, superseded by 0.8.6 before publish)</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Centered responsive preview.</strong> <code>M</code> now opens the page in a centered, device-sized frame on a dark stage — the DevTools look — instead of emulating in place at the tab's top-left corner. No debugger attachment, so Chrome's "started debugging this browser" banner is gone from the default path. The popover's new <strong>Engine</strong> switch drops to the old in-place emulation ("Device") when you need real mobile UA, touch and DPR; sites that refuse to load in a frame get a notice with a one-click switch. The Fit-window button now only appears for the Device engine, where it's still the only cure for the corner anchor.<li><strong>Inspection tools work inside the centered preview.</strong> Rulers, Measure, Inspect, Nudge, grid and the rest now operate on the mobile layout in the stage frame itself — the dock's buttons drive overlays injected into the preview (new <code>scripting</code> permission, scoped to Loupe's own frame). While the stage is up, top-frame overlays yield to it and reclaim the page when it closes.<li><strong>The Responsive card floats beside the preview and is draggable.</strong> In the centered engine it places itself next to the device frame instead of over it, and its header is a drag handle — park it anywhere; the spot is kept while you stay on the page.</li>
+</ul>
+<h2>0.8.4 — 2026-09-18</h2>
+<h3>Changed</h3>
+<ul>
+<li><strong>Inspect, Measure and Rulers are separate modes again.</strong> The 0.8.3 unification put every annotation on screen at once — selector label, size badge, X/Y/W/H readout and distance chips all crowding the same corner on dense pages. Each mode now shows only its own annotations: Inspect (<code>I</code>) hover-highlights and selects, Measure (<code>D</code>) does anchor-and-hover distances, Rulers (<code>R</code>) does bars, crosshair and the X/Y/W/H readout. Measure and Rulers get their dock buttons back.<li><strong><code>R</code> inside Rulers mode hides the bars</strong> — crosshair, guides and readout stay, so nothing covers the page's top-left corner; a third press exits.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Unpacked builds are now labeled "(dev)"</strong> in chrome://extensions. The store install and a local dist/ load otherwise show the same name, icon and (between releases) version, and running the store copy while iterating locally produced a day of ghost bug reports. <code>pnpm package</code> builds the clean-named release; plain <code>pnpm build</code> marks itself dev.<li><strong>Annotations no longer stack on top of each other.</strong> Every chip goes through one shared placer: it takes the first free anchor, dodges chips already on screen and the ruler gutter, and walks downward when a tight cluster leaves no free anchor. Long selector labels — Tailwind arbitrary variants like <code>[&amp;:has([role=checkbox])]:pr-0</code> — are truncated instead of banner-width, and the X/Y/W/H readout sits below the element.<li><strong>Ruler bars no longer hide the page underneath them.</strong> They now fade from a readable tint at the outer edge to nearly clear at the inner edge, with haloed ticks and numbers, instead of painting an opaque strip over content.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>Responsive mode reworked.</strong> The device controls move from a strip injected into the previewed page — which could never be wider than the phone it was previewing, and covered the site's own header — into a dock popover with a device picker, size fields, rotate, and a zoom control. The preview now <strong>scales to fit the window</strong> by default (Fit / 50% / 100% / 150%), so a 390px phone fills the space instead of sitting in a black corner; the page still computes at its real CSS width, so breakpoints stay exact. The dock auto-compacts when the previewed viewport is too narrow for it, keeping the responsive control reachable. The area beside the preview is now a neutral stage colour that follows your theme, and a <strong>Fit window to device</strong> button resizes the browser window around the preview to close the gap entirely (exiting restores your previous window bounds). Chrome always paints the emulated viewport from the top-left of the tab — an extension cannot centre it the way DevTools does — so the backdrop and the optional window fit are what make the empty space read as deliberate.</li>
+</ul>
+<h2>0.8.3 — 2026-09-17</h2>
+<h3>Changed</h3>
+<ul>
+<li><strong>Inspect, Measure and Page Rulers are now one mode.</strong> Inspect gained the other two as behaviors: with an element selected, hovering any other element draws live pixel distances between them (the old Measure flow, minus the mode switch), and the rulers layer — bars + crosshair over empty space, edge-snap guides over elements — is on by default (<code>R</code> hides it). Distance lines and labels draw in their own cyan so a measurement never blends into the selection it starts from. <code>D</code> and <code>R</code> still work (<code>D</code> jumps into Inspect; <code>R</code> toggles the layer from anywhere), ⌘K keeps "Measure distances" and "Toggle page rulers" searchable by name, and the dock slims from three buttons to one.</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li><strong>Nudge rides on Inspect</strong> — entering Nudge keeps the whole inspection instrument live: hover highlight, pinned selection, rulers, and live distances. Select a reference element, drag another, and the gap between them updates in real time while you drag.<li><strong>Nudge mode</strong> (<code>N</code>, free) — move elements on the live page by dragging or with arrow keys (Shift = 10px) and compare against a ghost of the original position with a Δ badge. Full undo/redo (<code>⌘Z</code>/<code>⇧⌘Z</code>, arrow bursts count as one step), Backspace resets the selected element, and the on-page pill carries undo/redo/Clear-all. Leaving the mode keeps the moves so the page can be browsed as-adjusted. Adjustments are inline <code>translate</code> only — non-destructive and gone on reload.<li><strong>Checks → Nudges</strong> — every moved element listed with its Δ and selector, per-row locate/reset, <strong>Copy AI prompt</strong> (a change list asking for real layout fixes, not translate hacks), and <strong>Screenshots</strong> — two PNGs: the adjusted page clean, and the comparison view with ghosts and Δ badges — ready to hand to a developer or coding agent.</li>
+</ul>
+<h2>0.8.2 — 2026-09-16</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>System theme</strong> — Settings → Theme gains a third option that follows the OS colour scheme live (panel and dock both), alongside Dark and Light. The ⌘K theme toggle still flips explicitly between dark and light.</li>
+</ul>
+<h2>0.8.1 — 2026-09-16</h2>
+<h3>Fixed</h3>
+<ul>
+<li><strong>"Move to Chrome's side panel" works on first click</strong> — the header button saved the preference but never opened the side panel or closed the in-page one, so nothing visibly happened until the panel was closed and reopened.</li>
+</ul>
+<h2>0.8.0 — 2026-09-13</h2>
+<h3>Changed</h3>
+<ul>
+<li><strong>Complete visual redesign</strong> — one token system (warm plum dark / warm paper light, a single violet accent, semantic colour families, a real elevation ramp) drives the panel, dock, and overlays; every hover/press springs; the panel slides in and out with the dock moving in lockstep; light mode no longer flashes dark on open. Reduced-motion is respected everywhere.<li><strong>Three tabs instead of five</strong> — <code>Element · Page · Checks</code>. The new <strong>Checks</strong> tab is one index for every audit: Tailwind Xray, DS Components, DS Lint, Dark-mode diff, Accessibility, and Figma compare (with breakpoints and QA export inside), free and Pro side by side. No feature was renamed or removed — only the containers changed.<li><strong>Page tab flattened</strong> — the landing screen is a collection index with live counts (Typography, Text colors, Backgrounds, Shadows, Gradients &amp; outlines, Spacing, Borders &amp; radii, Assets, Tech &amp; meta); one click to any inventory, back restores your exact scroll position. Picked colors + the WCAG contrast checker are pinned at the top.<li><strong>One-row header</strong> — the marketing title is gone; in its place a live context line (the page's hostname, or the selected element's clickable ancestry breadcrumb, which replaces the old Document section). The mark / PRO badge opens a new <strong>Settings sheet</strong> holding theme, text size, the design-system profile import/binding, Tailwind brand prefixes, rating, and licence.<li><strong>Drag-resizable panel</strong> — grab the in-page panel's left edge (320–640px); the width persists and wide layouts get two-column indexes.<li>The Figma viewport-mismatch banner now measures the page's real viewport (it used to read the panel's own ~380px window and was permanently on).</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li><strong>⌘K command palette</strong> (panel) — every mode and panel action, searchable, with keyboard navigation. The palette input sits inside the shared typing guard, so searching "grid" filters commands instead of toggling the grid.<li><strong>Trial countdown badge</strong> — the dock and panel now show <code>TRIAL · 5</code> while a Pro trial is running (amber for the last two days, <code>TRIAL ENDED</code> after), clickable straight through to upgrade. Deliberately styled lesser than the gradient PRO pill so buying visibly changes something and the badge changing on day 8 reads as the trial ending, not a bug. Paid and org-licensed users keep the gradient PRO.</li>
+</ul>
+<h2>0.7.5 — 2026-09-12</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Page inventories</strong> (Page tab) — three new sections: <strong>Fonts</strong> (every family in use with size/weight variants), <strong>Layout</strong> (unique padding, border, and border-radius values with visual swatches and use counts), and <strong>Assets</strong> (images, inline SVGs, favicons, CSS backgrounds — with open, download, and multi-select download). Every row copies its CSS; Locate toggles a highlight on the page, moves it between rows, and steps through a row's matches on re-activation — the whole card is the click target (active row keeps a blue ring), with the copy and locate chips on top.<li><strong>Global refresh</strong> in the panel header — re-pulls page info and re-runs every scan that currently has results (Tailwind, DS components, inventories, Figma diff). Replaces the decorative pin button.<li><strong>Rate-us stars</strong> — an always-available row under the panel header; one click opens the Chrome Web Store review page.<li><strong>PRO badge</strong> — paid and org-licensed users get an animated iridescent PRO pill on the dock (rotates on vertical docks) and in place of the panel header's logo square. Display-only; the Pro boundary stays in the background handlers. Trial users don't get it — it marks a purchase. The panel's Pro feature labels (Accessibility, Lint audit, Dark-mode diff) wear a small version of the same pill.<li><strong>Colors inventory</strong> (Page tab, Colors view) — page-wide computed colors CSS Pully-style, one segment at a time like the Layout view: text colors (hex, text-bearing elements only), background colors, box shadows, gradients, and outlines, each as swatch cards with use counts, copy, and locate. The eyedropper palette + WCAG contrast checker moved to a "Picked" segment alongside.</li>
+</ul>
+<h3>Added (interface)</h3>
+<ul>
+<li><strong>Light mode</strong> — a sun/moon toggle in the panel header switches the whole panel <strong>and the on-page dock</strong> between dark (default) and light themes; the choice persists. Under the hood every panel surface now resolves through theme tokens instead of hardcoded greys.<li><strong>Dramatic hide/show</strong> — hiding the dock slides it off toward the screen edge (with a little anticipation dip) and leaves a glowing brand-gradient orb; clicking the orb slides the dock back in with an overshoot. Honors reduced-motion preferences.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>A minimal dock</strong> — seven buttons dropped from the full dock, nothing lost: select parent/child (<code>↑</code>/<code>↓</code>), pause (<code>Space</code>), and shutdown (<code>Q</code>) are keyboard-only (listed in the <code>?</code> popover); element screenshot and copy-CSS live in the panel's Element tab; Figma diff lives in the panel's Design tab. DS Components and DS Lint buttons now appear only when a design-system profile is bound to the page's origin.<li><strong>The global open-panel command defaults to <code>Alt+Shift+P</code></strong> (was <code>Alt+Shift+L</code>), matching the in-page <code>P</code> shortcut. Chrome only applies suggested keys on fresh installs — existing installs keep whatever they have bound; check <code>chrome://extensions/shortcuts</code> to rebind.<li><strong>Pricing: Loupe Pro is now a one-time $20 purchase</strong> (was $8/month / $59/year / $129 lifetime) — buy once, use forever; the 7-day free trial stays. Team org licences are self-serve at getloupe.org ($249/year); the store-issued licences are signed with a new key added to <code>LICENSE_PUBLIC_KEYS</code> in this release.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Fonts inventory no longer selects the whole page</strong> — every element inherits a computed font-family, so "715 uses" counted containers and Locate's first match was often <code>&lt;body&gt;</code>. Font groups now only count elements with direct text, and the view lists <strong>unique font styles</strong> (family + size · weight · style · line-height cards, CSS Pully-style) clustered by family, under a family chip row that filters on click — instead of expandable family rows. Locate buttons across the panel also switched to a proper target icon.<li><strong>Anchor mode no longer disarms itself</strong> — after clicking "Anchor to element", the panel persisted a store snapshot carrying a stale <code>mode: 'idle'</code>, which synced back to the page and tore down the anchor inspector moments after it armed (timing-dependent; automation hit it every run, humans occasionally). The panel now mirrors the mode before writing.<li><strong>Design tab shows the diff summary again</strong> — the panel's hydrate poll never applied <code>figmaDiff</code>/<code>figmaSummary</code> from GET_STATE (every other heavy result was wired), so severity groups and repeat offenders never rendered after a compare.<li><strong>Figma token errors are visible</strong> — a failed Save &amp; Connect stored the error where only the connected view rendered it; the token form now shows the failure inline, names the scopes a scoped token needs (File content + Current user, read), and the scope-missing 403 gets a message saying how to fix it.</li>
+</ul>
+<h2>0.7.4 — 2026-09-12</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Page Rulers crosshair</strong> — Rulers mode (<code>R</code>) now tracks the cursor with a live crosshair and position tags on the ruler bars; hovering a real element snaps the crosshair to its edges and shows a floating <code>X: Y: W: H:</code> readout. Descends into same-origin iframes (common for embedded dashboards/tables) so it snaps to the real element inside rather than the iframe's own box. Shows nothing while hovering Loupe's own dock, instead of an unsnapped crosshair with nothing to measure. The ruler bars can be hidden from a popover behind the dock button, keeping just the crosshair; the choice persists across restarts.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Closing a mode's settings popover no longer exits the mode</strong> — the <code>X</code> on the Grid and Rulers popovers used to call the same handler as turning the mode off entirely; now it only dismisses the popover, and it reopens the next time that mode is freshly activated.</li>
+</ul>
+<h2>0.7.3 — 2026-09-09</h2>
+<h3>Added</h3>
+<ul>
+<li><strong><code>?</code> shows keyboard shortcuts</strong> — pressing <code>?</code> now toggles the dock's shortcuts popover, same as clicking the help button.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Design tab Fetch always pulls a fresh tree</strong> — the explicit Fetch button now bypasses the 15-minute Figma cache, so the tweak-frame → refetch → recompare iteration loop never runs against stale data. The cache still serves batch compare and re-anchor paths.<li><strong>Figma diff labels transparent backgrounds honestly</strong> — a DOM element with no background compared against a filled Figma node now reads <code>background-color transparent → #…</code> instead of inventing <code>#000000</code> (alpha was dropped during parsing). Still flagged as drift — a missing fill is real — just no longer mislabeled.<li><strong>Viewport-mismatch warning only fires for page-sized frames</strong> — comparing window width to a component-sized Figma frame (a card, a button) is meaningless since the diff anchors to one element; the Design tab now keeps the warning for desktop pages (≥ 500px wide) and mobile pages (≥ 320px wide and ≥ 600px tall) and stays quiet for component frames.</li>
+</ul>
+<h2>0.7.2 — 2026-08-16</h2>
+<h3>Changed</h3>
+<ul>
+<li><strong>Component inventory sees nested components</strong> — a slotted container (<code>tabs</code>, <code>dialog</code>, a page-level layout div) no longer swallows everything rendered inside it into one entry. Slot values following the <code>&lt;root&gt;-&lt;part&gt;</code> convention still count as parts of their root; any other nested slot (<code>button</code>, <code>card</code>, <code>select-trigger</code>) now gets its own inventory entry with its own variant histogram. Part names outside the convention can be declared via the new optional <code>components.partSlots</code> profile field. Lookalike detection now also runs inside component subtrees: an unslotted native control is flagged unless its direct parent is slotted (DS wrapper internals stay exempt). The scan now only records rendered elements, so panel counts, overlay badge numbers, and visible boxes always agree — hidden triggers and collapsed menus no longer produce phantom findings.<li><strong>Org licences are sticky across profile auto-refresh</strong> — when the profile fetched from <code>updateUrl</code> omits the <code>license</code> field, the refresh keeps the licence developers already imported. Teams can now host the profile publicly for token sync while distributing the licence privately once; a hosted profile that does include a licence still replaces the stored one (renewal rollout path). Documented in the authoring guide.</li>
+</ul>
+<h3>Internal</h3>
+<ul>
+<li><code>pnpm publish:store</code> pre-flights versions before uploading: refuses when the zip's manifest version isn't greater than the store's published version (forgot the bump) or doesn't match package.json (stale zip — forgot <code>pnpm package</code>). <code>--skip-version-check</code> bypasses.<li>Custom domain <strong>getloupe.org</strong>: manifest <code>homepage_url</code>, privacy-policy and store-listing URLs moved off <code>contactashpat.github.io</code> (old URLs redirect; onboarding page at https://getloupe.org/welcome).</li>
+</ul>
+<h3>Added</h3>
+<ul>
+<li><strong>Profile authoring guide published</strong> at https://getloupe.org/docs/profiles/ (the repo's <code>docs/profile-authoring.md</code>, which is not publicly linkable); the DS tab's Import popover now links to it.</li>
+</ul>
+<h2>0.7.1 — 2026-07-28</h2>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Typing in panel inputs no longer triggers shortcuts</strong> — entering "px-lg" into the Tailwind brand-prefix field (or any panel input: Figma URL/token, DS import…) closed the panel the moment "p" was typed, because the panel's P check deliberately sat above the typing guard. Fixed structurally: both keyboard surfaces are now thin handler maps over a single <code>dispatchShortcut()</code> that enforces the typing guard per shortcut from the keymap's own flags — only non-printable keys (Esc) may bypass it, an invariant enforced by unit test. The panel also gained the DS Components (O) and DS Lint (L) shortcuts it was missing.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>Component scan honours <code>ignoreSelectors</code></strong> — the profile's ignore list (previously lint-only) now also skips subtrees in the component inventory, so consciously-accepted exceptions (e.g. elements marked with a <code>data-ds-exception</code> attribute the profile ignores) stop reappearing in every audit. Documented as a team convention in the authoring guide.</li>
+</ul>
+<h2>0.7.0 — 2026-07-26</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>DS Profiles for Teams: offline org licences.</strong> Profile schema v2 adds <code>origins[]</code> (auto-bound on import), <code>updateUrl</code>, <code>reportWebhook</code>, and an embedded signed <code>license</code> blob. Licences are ECDSA-P256-signed JSON verified fully offline against public keys shipped in the extension (key list supports rotation); a valid licence covering the tab's bound profile unlocks every Pro gate (audits, Figma compare, AI, batch emulation) for the whole team — no individual accounts. 14-day renewal grace after expiry with a panel warning; the DS tab shows "Licensed to &lt;org&gt; · expires &lt;date&gt;". Issued with <code>scripts/keygen-license.mjs</code> + <code>scripts/sign-license.mjs</code>; the private key lives outside the repo. v1 profiles remain fully supported.<li><strong>Hosted-profile auto-refresh</strong> — profiles with an <code>updateUrl</code> re-fetch daily and on browser start (new <code>alarms</code> permission); a fetched profile replaces the stored one only when it validates, keeps its id, and has a newer <code>generatedAt</code> — a broken deploy never bricks existing installs. Declared <code>origins</code> re-bind on refresh.<li><strong>"Send to team" reporting</strong> — when the bound profile declares a <code>reportWebhook</code>, lint and dark-diff results gain an explicit send button that POSTs the findings to the team's own endpoint (page URL + findings + profile id + extension version; never tokens/credentials; https only; never automatic). Privacy policy updated accordingly.<li><strong>Team licensing surfaces</strong> — DS-tab "Get a team licence" link, README / authoring-guide / store-listing sections; commercial licensing is contact-based.<li><strong>"AI fix prompt" export</strong> — one click copies a self-contained markdown brief for a coding agent (Claude Code, Cursor, …) built from the audit findings: greppable class-string evidence, rendered-location selectors, per-rule fix guidance, replacement suggestions, and guard-rail constraints. Available on the component inventory (replace native controls with DS components), the lint audit, and the dark-mode diff.<li><strong>Numbered finding badges + annotated screenshot capture</strong> — component and lint overlay boxes now carry corner badges whose numbers match the prompt's <code>[n]</code> markers (a documented contract between overlay and report), and a camera button beside the AI-prompt button downloads the annotated viewport as a PNG — paste the prompt, attach the shot, and a multimodal agent can cross-reference every finding visually. Visible viewport only.<li><strong>Selector generator ignores framework-generated ids</strong> (<code>radix-_r_N_</code>, React useId, Headless UI…) — they regenerate per render and never appear in source, so selectors built on them were useless as evidence; class selectors are used instead.</li>
+</ul>
+<h3>Internal</h3>
+<ul>
+<li><code>pnpm publish:store</code> — zero-dependency Chrome Web Store API publisher (<code>scripts/webstore-publish.mjs</code>): <code>--init</code> one-time OAuth setup (loopback flow, credentials in gitignored <code>.webstore-credentials.json</code>, <code>WEBSTORE_*</code> env vars override for CI), default run uploads <code>loupe-&lt;version&gt;.zip</code> and submits for review, <code>--upload-only</code> / <code>--status</code> / <code>--zip</code> flags.</li>
+</ul>
+<h2>0.6.0 — 2026-07-26</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Panel text zoom</strong> — ZoomOut/ZoomIn buttons in the panel header (70%–160%, click the percentage to reset). Uses CSS <code>zoom</code> so every panel surface scales and reflows; persisted across browser restarts, applies to both the native side panel and the injected iframe panel.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>"Log in" is now offered at every Pro gate</strong> (a11y audit, DS lint, dark-mode diff), not just the Design tab's UpgradeCard — users with a paid licence or dashboard-granted free access on another install had no way to link their email from the DS/Page tabs.<li><strong>DS Components shortcut hint disambiguated</strong> — "Press O (the letter O)"; the monospace kbd chip read as the digit zero.<li><strong>Modes no longer resurrect after being stopped</strong> (e.g. Tailwind Xray restarting seconds after pressing <code>S</code>). The panel's 1-second state poll wrote its snapshot through persisting store actions, so a response fetched just before a mode exit re-broadcast the stale mode to the page via the storage sync. Hydrate now writes through the store's raw setState — display-only, never persisted.<li><strong>Pro: dark-mode diff</strong> (DS tab) — snapshots every rendered element's colour channels, toggles the profile's <code>darkDiff</code> theme axis on <code>&lt;html&gt;</code>, re-reads, and flags colours that are byte-identical across the toggle — hardcoded values the static lint can't see when consumer CSS indirects to them. Fully synchronous (snapshot → toggle → re-read → restore in one task) so page theme managers never observe an intermediate state; a no-transition style neutralises animated theme libraries; inherited channels report on the ancestor that set them, not every descendant; tokens whose light and dark values are identical by design are whitelisted. Severity: error when the static colour matches a primitive or nothing, warning otherwise; each issue suggests the nearest token.<li><strong>Design-token-aware Figma compare</strong> — with a profile bound, colour diff hints resolve to named design-system tokens (<code>bg-surface</code>) instead of raw <code>var(--…)</code> names, flowing through FixCard chips, grouped summaries, QA reports, and AI prompts unchanged.<li><strong>DS-aware AI suggestions</strong> — the explain prompt now names the bound design system, instructs the model to prefer its semantic token utilities and avoid raw hex/deprecated aliases, and includes what the current DOM value already matches.<li><strong>QA report: dark-mode section</strong> — exported reports include the dark-diff table (with colour swatches) when a diff has been run; export uses the cached result only, so downloading a report never flashes the page theme.</li>
+</ul>
+<h2>0.5.0 — 2026-07-25</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Pro: DS Lint audit</strong> — one-click page-wide lint against the bound design-system profile's rules: raw colour literals (classes + inline styles), primitive tokens without a dark-mode override, raw Tailwind spacing scale outside design-system components, the silently-dropped <code>[var(--density-…)]</code> arbitrary form, <code>hsl(var(--…))</code> wraps, deprecated aliases (suggestion names the replacement), and raw text sizes where the DS ships a type scale. Grouped results in the DS tab with click-to-locate; errors before warnings; 300-issue / 5,000-element caps.<li><strong>Pro: DS Lint overlay</strong> — new mode on <code>L</code> painting red (error) / amber (warning) boxes with per-issue tooltips. The overlay requests the scan through the background, so the keyboard shortcut cannot bypass the licence gate; unlicensed use shows a trial hint toast.<li><strong>QA report: design-system section</strong> — when a profile is bound, exported reports gain a lint table (severity, issue, suggestion, evidence, selector) and the header names the profile and its error/warning counts.<li><strong>Profile authoring guide</strong> — <code>docs/profile-authoring.md</code>: the released reference for design-system teams building their own profile JSON (schema, lint-rule semantics, generation, distribution, pre-release checklist).</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>DS tab no longer shows another tab's binding state.</strong> On tabs where Loupe wasn't started, the panel could display a different tab's profile meta and page origin (globally-synced store fields) while lint correctly failed with "no profile bound". <code>GET_STATE</code> now always answers with the tab's own document URL and locally-derived profile meta, and the DS RPC handlers lazily load the origin binding on demand.</li>
+</ul>
+<h3>Internal</h3>
+<ul>
+<li><strong>Unit tests introduced</strong> (<code>pnpm test</code>, Vitest 3 — v4 needs Vite 6): 49 tests covering profile schema validation, all seven lint rules, the token engine (reverse lookup, ranking, page-var fallback), and the Tailwind classifier. Standalone <code>vitest.config.ts</code> so the crx plugin stays out of the runner. Verification gate is now typecheck + test.<li>Shared panel style atoms extracted to <code>src/panel/styles.ts</code> (ghost/kbd/ input/primary/secondary), replacing per-tab duplicates.</li>
+</ul>
+<h2>0.4.0 — 2026-07-25</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Design System Profiles</strong> (free): import a JSON profile describing your design system — tokens (CSS vars + utility classes + light/dark values), component fingerprints (slot attribute + variant attributes), theme axes, and lint rule config — and bind it to a page origin. Import from a URL, pasted JSON, or a file; profiles persist in <code>chrome.storage.local</code> and never ride the session store sync. No profiles are bundled — a design system's tokens and fingerprints are distributed by its owning team, not shipped to every Web Store user.<li><strong><code>scripts/build-profile.mjs</code></strong> — generic reference profile generator: merges a hand-authored base config (<code>scripts/example-profile.base.json</code> is the neutral starting point) with a token manifest; output lands in the gitignored <code>profiles/</code> directory. Nothing design-system-specific is tracked in the repo.<li><strong>Element panel Tokens view</strong> (free): the Code section's toggle is now Computed ⇄ Declared ⇄ Tokens. Per property: declared <code>var()</code> usage (exact), design-system utility classes (exact, the only route for class-only legacy aliases), and computed-color reverse lookup (ranked candidates, never claimed as certain). Flags raw values, primitives, and deprecated aliases with their replacement.<li><strong>DS Components mode</strong> (free): new mode on <code>O</code> — inventories the page via the profile's slot attribute (component roots, part counts, variant histograms) and flags native <code>button/input/select/textarea/[role=button]</code> outside the design system as lookalikes. Teal boxes for components, red for lookalikes; lookalikes painted first under the 400-box overlay cap.<li><strong>DS panel tab</strong>: profile management (import/bind/delete, detect banner) plus the component inventory with locate-cycling and rescan.</li>
+</ul>
+<h3>Internal</h3>
+<ul>
+<li>The rAF box/tooltip overlay machinery is extracted from Tailwind Xray into a reusable <code>boxOverlay</code> factory (offscreen boxes now skip painting); Tailwind Xray behaviour is unchanged.<li>New <code>readCssVarsDeep()</code> walks @media/@layer/@supports and <code>adoptedStyleSheets</code> with theme-axis selector context (the Figma-compare var reader is untouched).</li>
+</ul>
+<h2>0.3.0 — 2026-07-25</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Tailwind Xray</strong> (free): new mode on <code>S</code> that highlights every element carrying raw Tailwind utility classes — category-colored overlay boxes, hover tooltip listing the matched classes, click-to-inspect. Detection is a heuristic classifier (variant/important/negative stripping, arbitrary values, curated utility families) with a configurable brand-prefix allowlist so design-system classes are never flagged.<li><strong>Tailwind panel tab</strong>: per-utility counts with locate-on-page cycling, brand-prefix editor with live rescan.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>Select Target removed</strong>: the dock button and <code>S</code> shortcut duplicated Inspect (<code>I</code>); the slot now triggers Tailwind Xray.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Select child (↓)</strong> was a silent no-op. Parent/child navigation now walks the live DOM: ↑ remembers the child it left so ↓ returns to it, falling back to the first element child — ↑/↓ are a reversible pair.<li><strong>Side panel is now strictly per-tab</strong>: it no longer stays visible when switching tabs, and a panel closed via any path (including Chrome's own ✕) no longer reappears when returning to its tab.</li>
+</ul>
+<h3>Internal</h3>
+<ul>
+<li>Lockfile migrated to pnpm 11 (v9 lockfile), <code>packageManager</code> pinned, esbuild/sharp install scripts approved via <code>pnpm-workspace.yaml</code>.<li>Privacy policy and store listing kit aligned with Web Store disclosures.</li>
+</ul>
+<h2>0.2.0 — 2026-07-19</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Loupe Pro</strong> via ExtensionPay: subscriptions + lifetime plan, 7-day trial, background-enforced gating, QA report export (standalone HTML).<li><strong>Pro: accessibility audit</strong> — page scan for contrast, alt text, tap targets, form labels, control names, document language/title, heading order.<li><strong>Pro: breakpoint batch compare</strong> — re-runs the Figma diff across multiple emulated widths.<li><strong>Responsive mode</strong>: <code>chrome.debugger</code> device emulation applied to the current tab in place (metrics, touch, UA + client hints), with an in-page toolbar; survives navigation while attached.<li><strong>Color picker upgrades</strong>: live magnifier bubble with pixel sampling, clipboard copy, palette, CSS-variable matches, contrast checker.<li><strong>Element screenshot</strong> and <strong>copy-as-CSS</strong> dock buttons.<li><strong>Dock UX</strong>: drag + snap to any screen edge, compact state, startup hint, shortcuts help.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li>Find-element text search.<li>Service-worker registration killed by ExtPay validation (payment-page content script now runs at <code>document_start</code>).</li>
+</ul>
+<h2>0.1.0 — 2026-07-12</h2>
+<p>Initial release: element inspector, xray outlines, layout grid, rulers,</p>
+<p>element-to-element distance measuring, color picker, find element, side</p>
+<p>panel / in-page panel surfaces, Figma design-vs-DOM comparison with optional</p>
+<p>AI explanations.</p>
+
+  </div>
+<script src="/theme.js" defer></script>
+</body>
+</html>
