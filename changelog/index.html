@@ -37,9 +37,18 @@
   <div class="wrap">
     <a class="back" href="/">&larr; getloupe.org</a>
     <h1>Changelog</h1>
-    <p class="sub">Every release, straight from the repo — current version 0.8.8, page generated 2026-09-20.</p>
+    <p class="sub">Every release, straight from the repo — current version 0.8.9, page generated 2026-09-20.</p>
 <p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
 <p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>0.8.9 — 2026-09-20</h2>
+<h3>Fixed</h3>
+<ul>
+<li><strong>"Copy AI prompt" actually copies on the in-page panel.</strong> The panel iframe lacked the clipboard-write permission policy, so every copy button silently failed there (the native side panel was fine) — and the failure was swallowed, so the button just looked dead. The iframe now grants clipboard-write, a legacy fallback covers the rest, failures say "Copy failed", and success reads "Copied — paste into your agent". The button is also renamed from "AI fix prompt" to <strong>Copy AI prompt</strong> with a tooltip clarifying no API key is needed — it writes a prompt for YOUR agent, it doesn't call an API.<li><strong>The AI explainer now says why it isn't working.</strong> Without an API key the "Explain with Claude" feature was simply invisible on FixCards — it now shows "AI explanations need your Anthropic API key" with an Add-API-key button that opens the key form and scrolls it into view. Key-rejection errors say so plainly with the same shortcut, and the raw <code>pro_required</code> sentinel now reads "AI explanations are part of Loupe Pro."</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>Design-system profiles import in one pick, right from Checks.</strong> The Components, Lint and Dark-diff checks now offer "Import profile JSON" directly (importing also binds the profile to the current site), with a link to the authoring guide — no trip through Settings. Once a profile is bound, each check shows which profile is active with an <strong>Update</strong> button that takes a replacement JSON in one pick. The full manager (URL fetch, paste, multiple profiles, unbind/delete) stays in Settings.</li>
+</ul>
 <h2>0.8.8 — 2026-09-20</h2>
 <h3>Added</h3>
 <ul>
