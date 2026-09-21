@@ -37,9 +37,14 @@
   <div class="wrap">
     <a class="back" href="/">&larr; getloupe.org</a>
     <h1>Changelog</h1>
-    <p class="sub">Every release, straight from the repo — current version 0.8.9, page generated 2026-09-20.</p>
+    <p class="sub">Every release, straight from the repo — current version 0.9.0, page generated 2026-09-21.</p>
 <p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
 <p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>0.9.0 — 2026-09-21</h2>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Xray no longer outlines Loupe's own UI</strong>, and — the bigger one — **the Page inventory no longer records Loupe's injected styles as the page's design**: with Xray active, the entire outlines group used to be Loupe's own overlay palette (Find highlights polluted it the same way). The inventory now disables Loupe's injected stylesheets for the duration of the scan — and the same guard protects the DS lint, dark-mode diff and accessibility-contrast audits, which sampled the same polluted styles.<li><strong>Layout-grid settings survive a browser restart.</strong> Colour, opacity, columns and margins lived only in session storage and silently reset; they now mirror to durable prefs like the dock position.<li><strong>The Element tab's "CSS" copy button confirms</strong> ("Copied"/"Failed") instead of giving no feedback at all.<li><strong>Tailwind Xray says so when a page has no utilities</strong> instead of entering silently with nothing painted — the mode looked dead on non-Tailwind sites.<li><strong>Find highlights follow your overlay-style colours</strong> (Settings → Overlay appearance) instead of staying hardcoded red/amber, and the match counter no longer counts elements a SPA rerender removed.<li><strong>The colour picker can no longer show stale colours</strong>: if the post-scroll recapture fails (rate limit, window blur), the old snapshot is dropped and the bubble stays hidden until a fresh capture lands — previously it confidently sampled the pre-scroll screenshot at the new position.<li>Find also stops scanning the document twice per keystroke (the dock input and the store sync both triggered the same search).</li>
+</ul>
 <h2>0.8.9 — 2026-09-20</h2>
 <h3>Fixed</h3>
 <ul>
