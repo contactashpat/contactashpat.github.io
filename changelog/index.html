@@ -37,9 +37,14 @@
   <div class="wrap">
     <a class="back" href="/">&larr; getloupe.org</a>
     <h1>Changelog</h1>
-    <p class="sub">Every release, straight from the repo — current version 0.9.0, page generated 2026-09-21.</p>
+    <p class="sub">Every release, straight from the repo — current version 0.9.1, page generated 2026-09-22.</p>
 <p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
 <p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>0.9.1 — 2026-09-22</h2>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Measuring nested elements shows the four edge gaps</strong> (inner edge → container edge, arrows and values on each side) instead of "overlap" extents — which for a contained element were just its own size. Asking "how far is this dropdown from the right edge of its card" now gets a direct answer; partially overlapping elements keep the overlap reading.</li>
+</ul>
 <h2>0.9.0 — 2026-09-21</h2>
 <h3>Fixed</h3>
 <ul>
