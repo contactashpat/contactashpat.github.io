@@ -37,9 +37,14 @@
   <div class="wrap">
     <a class="back" href="/">&larr; getloupe.org</a>
     <h1>Changelog</h1>
-    <p class="sub">Every release, straight from the repo — current version 0.9.1, page generated 2026-09-22.</p>
+    <p class="sub">Every release, straight from the repo — current version 0.9.2, page generated 2026-09-23.</p>
 <p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
 <p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>0.9.2 — 2026-09-23</h2>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Figma compare explains itself when things go stale.</strong> An expired or revoked Figma token used to silently show the pristine connect form — it now says so. Pressing Esc while "Anchor to element" was armed left the "Click an element…" hint stuck — it now resets. "Re-run diff" after the anchored element left the page did nothing — it now tells you to re-anchor. And reopening the panel mid-session no longer strands you: the frame URL comes back prefilled with a note that one Fetch re-arms anchoring.</li>
+</ul>
 <h2>0.9.1 — 2026-09-22</h2>
 <h3>Fixed</h3>
 <ul>
