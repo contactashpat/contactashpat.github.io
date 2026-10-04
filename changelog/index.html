@@ -37,9 +37,24 @@
   <div class="wrap">
     <a class="back" href="/">&larr; getloupe.org</a>
     <h1>Changelog</h1>
-    <p class="sub">Every release, straight from the repo — current version 1.2.0, page generated 2026-10-04.</p>
+    <p class="sub">Every release, straight from the repo — current version 2.0.0, page generated 2026-10-04.</p>
 <p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
 <p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>2.0.0 — 2026-10-04</h2>
+<h3>Changed</h3>
+<ul>
+<li><strong>Inspect and Nudge are one mode now, behind a padlock.</strong> <code>I</code> opens it read-only: hover, pin with a click, walk the tree — the page cannot change. <code>N</code> unlocks it: everything Nudge could do — drag with snapping, resize, groups, duplicate/remove, text and style edits — and <code>N</code> again re-locks. The always-visible pill announces the state (<code>🔒 Inspecting · N to edit</code> when locked) and clicking it flips the padlock; editing CSS from the panel unlocks automatically, so there is no mode to hop. The entrance always states the padlock — <code>I</code> is always read-only, <code>N</code> always editing, no memory. <strong>One deliberate change in muscle memory: <code>N</code> no longer exits</strong> — it re-locks; <code>I</code>, <code>Esc</code> and the dock still exit. Adjustments still survive locking and leaving the mode; Clear all and reload still reset. A legacy shim keeps old <code>nudge</code> mode requests (another tab mid-update, saved automation) working as "the mode, unlocked".</li>
+<li><strong>The panel grew a mode bar, and the pill knows when it's redundant.</strong> While the panel is open, the merged mode's controls — the padlock, ✕ Remove, undo/redo, Clear all — live in a slim bar under the panel's tabs, and the on-page pill collapses to a bare 🔒/🔓 state chip; close the panel and the full pill returns, because it is then the only control surface. The same stateful control never renders twice on screen.</li>
+<li><strong>The first-run tour teaches the padlock</strong> — a new step between selecting and measuring: unlock with <code>N</code>, drag, <code>⌘Z</code>, <code>Esc</code> re-locks. The empty states teach it too: the Element tab's "Inspecting…" now says click to <em>pin</em> and <code>N</code> to edit, and Checks → Nudges starts from <code>I</code> then <code>N</code>.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Esc cancels a text edit instead of silently saving it.</strong> The window-level exit handler fired before the editing element's own keydown and committed the edit on its way out of the mode — Esc, the universal "forget that", was saving. It is now the first rung of one ordered Esc ladder: cancel the edit (reverting it) → leave ✕ Remove → release the pinned selection → re-lock the padlock → exit the mode. One layer per press, innermost first.</li>
+<li><strong>Xray's pin releases on Esc.</strong> Xray pins a clicked element exactly as the read-only inspector does, but the old Esc guard only recognised the pin in one mode — in xray, Esc abandoned the pin and left. The ladder releases a pin wherever one is held.</li>
+<li><strong>Locating an element from the panel no longer pins it while editing.</strong> Locate used the default pin-on-select, and a pin taken while the padlock was open froze hover with nothing on screen able to release it. While editing, locate selects without pinning; in every read-only surface it still pins, which is what lets the annotations survive the mouse trip.</li>
+<li><strong>Leaving the mode locks the padlock.</strong> The unlock is a property of being in the mode, not ambient state — a stale unlock leaking into xray made its clicks refuse to pin.</li>
+<li>The pinned badge now reads <strong><code>· pinned · Esc</code></strong> — "lock" belongs solely to the padlock.</li>
+</ul>
 <h2>1.2.0 — 2026-10-04</h2>
 <h3>Added</h3>
 <ul>
