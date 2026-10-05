@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5GQQLK6PJF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5GQQLK6PJF');
+</script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sorry to see you go — Loupe</title>
+  <meta name="description" content="Loupe was uninstalled. One sentence about why would genuinely help.">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%233B82F6'/%3E%3Cstop offset='1' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='14' cy='14' r='9' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3Cline x1='21' y1='21' x2='28' y2='28' stroke='url(%23g)' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <script>try{var t=localStorage.getItem("loupe-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --blue: #3B82F6;
+      --violet: #8B5CF6;
+      --grad: linear-gradient(135deg, var(--blue), var(--violet));
+      --bg: #fafafa;
+      --fg: #18181b;
+      --muted: #52525b;
+      --card: #ffffff;
+      --border: #e4e4e7;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #101014; --fg: #f4f4f5; --muted: #a1a1aa; --card: #18181d; --border: #2a2a31;
+      }
+    }
+    :root[data-theme="dark"] { --bg: #101014; --fg: #f4f4f5; --muted: #a1a1aa; --card: #18181d; --border: #2a2a31; }
+    :root[data-theme="light"] { color-scheme: light; }
+    :root[data-theme="dark"] { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--fg); }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 64px 24px 80px; }
+    h1 { font-size: clamp(28px, 5vw, 36px); letter-spacing: -0.02em; margin: 0 0 10px; }
+    .sub { color: var(--muted); margin: 0 0 36px; }
+    .q { font-weight: 600; margin: 0 0 14px; }
+    .reasons { display: grid; gap: 10px; margin: 0 0 36px; }
+    .reasons a {
+      display: block; background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 18px; text-decoration: none; color: var(--fg);
+    }
+    .reasons a:hover { border-color: var(--violet); }
+    .reasons a span { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
+    .foot { color: var(--muted); font-size: 15px; }
+    .foot a { color: var(--violet); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Sorry to see you go</h1>
+    <p class="sub">Loupe is built by one person, and uninstall reasons are the most useful
+    feedback there is. One click below opens an email — add a sentence if you have one,
+    or send it as-is. Closing this tab is a complete answer too.</p>
+
+    <p class="q">What made you uninstall?</p>
+    <div class="reasons">
+      <a href="mailto:contact@getloupe.org?subject=Uninstalled%20Loupe%3A%20missing%20something&body=I%20uninstalled%20Loupe%20because%20it%20was%20missing%3A%20">
+        It was missing something I needed
+        <span>Tell me what — it may already be on the roadmap.</span>
+      </a>
+      <a href="mailto:contact@getloupe.org?subject=Uninstalled%20Loupe%3A%20something%20broke&body=I%20uninstalled%20Loupe%20because%20this%20didn%27t%20work%3A%20">
+        Something didn’t work
+        <span>A sentence about what broke usually gets it fixed within days.</span>
+      </a>
+      <a href="mailto:contact@getloupe.org?subject=Uninstalled%20Loupe%3A%20not%20for%20me&body=I%20uninstalled%20Loupe%20because%3A%20">
+        It wasn’t what I expected
+        <span>What were you hoping it would do?</span>
+      </a>
+    </div>
+
+    <p class="foot">Changed your mind? <a href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk">Reinstall Loupe</a>
+    — or see <a href="/changelog/">what’s shipped lately</a>.</p>
+  </div>
+</body>
+</html>
