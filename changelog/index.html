@@ -37,9 +37,15 @@
   <div class="wrap">
     <a class="back" href="/">&larr; getloupe.org</a>
     <h1>Changelog</h1>
-    <p class="sub">Every release, straight from the repo — current version 2.0.2, page generated 2026-10-05.</p>
+    <p class="sub">Every release, straight from the repo — current version 2.1.0, page generated 2026-10-06.</p>
 <p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
 <p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>2.1.0 — 2026-10-06</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>The crosshair is deterministic now.</strong> Snapping to a full-bleed element (dashboard shells, full-width sections) used to paint all four guide lines on the viewport edges — a crosshair that existed but was invisible, which read as "the crosshair never appears" on app-style pages. An element with no edge on screen now falls back to plain pointer lines, so something always marks the pointer. And the behaviour is visible, switchable state: the Rulers dock button opens a popover with "Ruler bars" and "Snap crosshair to elements" toggles.</li>
+<li><strong>Hover a dock button to learn the tool.</strong> Dwelling on a tool upgrades its tooltip to a capability card — an animated vignette of the tool's own annotations, a one-line description, and the shortcuts that used to live only in the ? popover: the padlock, the ancestry walk, T-capture. Instant tooltips stay for quick identification; keyboard focus opens the card immediately; reduced motion shows the finished frame.</li>
+</ul>
 <h2>2.0.2 — 2026-10-05</h2>
 <h3>Fixed</h3>
 <ul>
