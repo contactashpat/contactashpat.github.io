@@ -37,9 +37,16 @@
   <div class="wrap">
     <a class="back" href="/">&larr; getloupe.org</a>
     <h1>Changelog</h1>
-    <p class="sub">Every release, straight from the repo — current version 2.2.0, page generated 2026-10-07.</p>
+    <p class="sub">Every release, straight from the repo — current version 2.3.0, page generated 2026-10-07.</p>
 <p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
 <p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>2.3.0 — 2026-10-07</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Picked colours apply straight to the selection.</strong> Click a picked swatch and the formats block offers Text / Fill / Border — one click sets that property on the selected element, recorded and undoable like any other adjustment. The full loop is now: pick with <code>C</code>, apply from Page or from inside any colour editor, check contrast from the selection — no clipboard, no retyping.</li>
+<li><strong>The contrast checker loads from the selection.</strong> One click fills the Text and Background slots from the selected element's own text colour and its <em>effective</em> background — composited up the ancestor chain, the way the a11y audit computes it — so "does this element's text pass?" is answered without hand-assigning swatches. Backgrounds that cannot be resolved (images, gradients) are left alone rather than invented.</li>
+<li><strong>Picked colours appear inside the colour editor.</strong> Sample a colour anywhere with the picker and it shows up as a tappable swatch in every colour popover — panel Style editor and the on-page editor alike — so "steal that colour from the page and put it on this element" is two clicks with no clipboard round-trip. Tapping a swatch applies it live and snaps the editor's thumbs to match.</li>
+</ul>
 <h2>2.2.0 — 2026-10-06</h2>
 <h3>Added</h3>
 <ul>
