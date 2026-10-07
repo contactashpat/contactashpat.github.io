@@ -37,9 +37,28 @@
   <div class="wrap">
     <a class="back" href="/">&larr; getloupe.org</a>
     <h1>Changelog</h1>
-    <p class="sub">Every release, straight from the repo — current version 2.1.0, page generated 2026-10-06.</p>
+    <p class="sub">Every release, straight from the repo — current version 2.2.0, page generated 2026-10-07.</p>
 <p>All notable changes to Loupe. Versions match the Chrome Web Store releases;</p>
 <p>the manifest version is generated from <code>package.json</code>.</p>
+<h2>2.2.0 — 2026-10-06</h2>
+<h3>Added</h3>
+<ul>
+<li><strong>Edit colours in place, on the page.</strong> With editing unlocked, press <code>B</code> (or the pill's palette button) and the colour popover opens anchored to the selected element — Text, Fill and Border targets, eyedropper, hex — no panel needed. Picks record as adjustments: they undo with <code>⌘Z</code>, appear in the change list, and export with everything else.</li>
+<li><strong>The colour picker is Loupe's own now.</strong> Clicking a swatch in the Style editor opens a house popover — saturation field, hue rail, eyedropper (pick straight from the page), hex readout — instead of the browser's native dialog, which could never match the panel. Every drag commits live and coalesces into one undo; Esc closes the popover and nothing else.</li>
+</ul>
+<h3>Changed</h3>
+<ul>
+<li><strong>Picking a colour opens the Page tab.</strong> The picked stack is pinned at the top of the Page index; the panel now flips there the moment a pick lands, so the copy is visible landing instead of silent.</li>
+</ul>
+<h3>Fixed</h3>
+<ul>
+<li><strong>Logging in unlocks Pro without a wait.</strong> After a login or purchase the padlock could sit locked for up to a minute: returning from the extensionpay tab re-checked at the exact moment the licence cache was freshest-stale, and nothing ever pushed. The background now broadcasts the flip to every surface the moment ExtPay reports it, and walking through any upgrade/login door schedules its own re-checks (30s–4min, alarm-based so the service worker's teardown can't kill them).</li>
+<li><strong>The camera button captures what you see.</strong> The Element tab's two capture buttons had the icons backwards: the camera took the clean, annotation-free shot and the unassuming frame icon took the annotated one — pressing "screenshot" lost the spacing bands you were looking at. The camera is the annotated capture now (same as <code>T</code>); the frame is the explicitly-labelled "element only" shot. Also fixed: on a locked, untouched page the padlock chip was baked into every annotated capture.</li>
+<li><strong>The colour popover never opens clipped.</strong> Opened from the Border swatch it ran past the panel's right edge; from Background it sank below the fold — the panel's scroll containers clipped it both ways. It positions itself now: anchored to its trigger, measured, clamped into the viewport, flipping above when the bottom is tight. And <code>B</code> works with the panel focused too, not just the page.</li>
+<li><strong>The contrast ratio is always readable.</strong> The checker's result chip rendered the ratio in the tested pair itself — at 1.18:1 the number was as unreadable as the pairing it measured. The "Aa" preview still shows the pair (its legibility IS the result); the ratio now sits beside it in panel ink.</li>
+<li><strong>Style editor fields share one left edge again.</strong> The label column was a pixel-count too narrow for "Background", which collided with its swatch and broke the alignment; and both selects' chevrons sat flush against their right border (Chrome's native arrow ignores padding) — the chevron is drawn by us now, on theme tokens, with a real inset.</li>
+<li><strong>The tooltip's key chip is readable in light theme.</strong> The dock tooltip is deliberately dark over any page, but its key chip followed the global theme — in light mode that was dark-on-dark, an invisible letter. Chips now follow the surface they sit on.</li>
+</ul>
 <h2>2.1.0 — 2026-10-06</h2>
 <h3>Added</h3>
 <ul>
