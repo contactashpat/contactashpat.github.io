@@ -137,15 +137,15 @@ Loupe
 <dl style="margin: 0; display: flex; flex-direction: column">
 <div style="display: flex; flex-wrap: wrap; gap: 4px 32px; padding: 16px 0; border-top: 1px solid var(--border)">
 <dt style="flex: 0 0 200px; font-weight: 600">Inspect <span class="kbd">I</span></dt>
-<dd style="flex: 1 1 400px; margin: 0; color: var(--fg-soft)">Hover any element for its selector, box model, computed CSS, and ancestry. Screenshot it to PNG or copy its styles as a CSS rule.</dd>
+<dd style="flex: 1 1 400px; margin: 0; color: var(--fg-soft)">Hover any element for its selector, box model, computed CSS, and ancestry — read-only, behind a padlock, so the page can't change under you. Click to pin, walk the tree with arrows, screenshot it to PNG with its spacing drawn in, or copy its styles as a CSS rule.</dd>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 4px 32px; padding: 16px 0; border-top: 1px solid var(--border)">
 <dt style="flex: 0 0 200px; font-weight: 600">Measure distances <span class="kbd">D</span></dt>
 <dd style="flex: 1 1 400px; margin: 0; color: var(--fg-soft)">Click an anchor element, hover another — exact pixel distances between them, live, in DevTools style.</dd>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 4px 32px; padding: 16px 0; border-top: 1px solid var(--border)">
-<dt style="flex: 0 0 200px; font-weight: 600">Nudge <span class="kbd">N</span></dt>
-<dd style="flex: 1 1 400px; margin: 0; color: var(--fg-soft)">Move, resize and restyle elements on the live page: drag or arrow-key them with snapping to their neighbours’ edges, resize by handles, select several and move them as one, duplicate or remove a block to try the layout without it, edit padding, colour, type and radius from the panel, and rewrite text in place. A ghost of the original stays for comparison, <span class="kbd">⌘Z</span> undoes, and everything resets on reload — then export the change list for your developer or AI agent, with before/after screenshots.</dd>
+<dt style="flex: 0 0 200px; font-weight: 600">Edit the page <span class="kbd">N</span></dt>
+<dd style="flex: 1 1 400px; margin: 0; color: var(--fg-soft)">Open Inspect's padlock and the same mode becomes an editor: drag or arrow-key elements with snapping to their neighbours’ edges, resize by handles, move several as one, duplicate or remove a block to try the layout without it, restyle padding, colour, type and radius — from the panel or right on the page with <span class="kbd">B</span> — and rewrite text in place. A ghost of the original stays for comparison, <span class="kbd">⌘Z</span> undoes, and everything resets on reload — then export the change list as an AI-agent prompt or a PR-ready checklist, with before/after screenshots.</dd>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 4px 32px; padding: 16px 0; border-top: 1px solid var(--border)">
 <dt style="flex: 0 0 200px; font-weight: 600">Layout grid &amp; rulers <span class="kbd">G</span> <span class="kbd">R</span></dt>
@@ -153,7 +153,7 @@ Loupe
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 4px 32px; padding: 16px 0; border-top: 1px solid var(--border)">
 <dt style="flex: 0 0 200px; font-weight: 600">Color picker <span class="kbd">C</span></dt>
-<dd style="flex: 1 1 400px; margin: 0; color: var(--fg-soft)">A live magnifier samples the exact pixel under your cursor. Build a palette with hex/RGB/HSL, CSS-variable matches, and a WCAG contrast checker.</dd>
+<dd style="flex: 1 1 400px; margin: 0; color: var(--fg-soft)">A live magnifier samples the exact pixel under your cursor. Picked colours become tappable swatches in every colour editor, with hex/RGB/HSL, CSS-variable matches, and a WCAG contrast checker that can load the selected element's own text and background in one click.</dd>
 </div>
 <div style="display: flex; flex-wrap: wrap; gap: 4px 32px; padding: 16px 0; border-top: 1px solid var(--border)">
 <dt style="flex: 0 0 200px; font-weight: 600">Xray &amp; find <span class="kbd">X</span> <span class="kbd">F</span></dt>
@@ -212,14 +212,15 @@ Loupe
 <tbody>
 <tr><td><span class="kbd">Alt</span>+<span class="kbd">Shift</span>+<span class="kbd">K</span></td><td>Start / stop Loupe for the current tab</td></tr>
 <tr><td><span class="kbd">Alt</span>+<span class="kbd">Shift</span>+<span class="kbd">P</span></td><td>Open the side panel</td></tr>
-<tr><td><span class="kbd">I</span></td><td>Inspect — hover highlights, click selects; hover another element to measure the gap</td></tr>
+<tr><td><span class="kbd">I</span></td><td>Inspect — hover to read, click to pin; opens read-only (the padlock closed)</td></tr>
 <tr><td><span class="kbd">X</span></td><td>Xray</td></tr>
 <tr><td><span class="kbd">G</span></td><td>Layout grid</td></tr>
 <tr><td><span class="kbd">R</span></td><td>Rulers — press again to hide the bars, again to exit</td></tr>
 <tr><td><span class="kbd">D</span></td><td>Measure distances — click an anchor, hover a second element</td></tr>
-<tr><td><span class="kbd">N</span></td><td>Nudge — move, resize and restyle elements against a ghost of the original</td></tr>
+<tr><td><span class="kbd">N</span></td><td>The padlock — unlock Inspect to edit the live page; press again to re-lock</td></tr>
 <tr><td><span class="kbd">T</span></td><td>Screenshot the element with its spacing annotations</td></tr>
 <tr><td><span class="kbd">C</span></td><td>Color picker</td></tr>
+<tr><td><span class="kbd">B</span></td><td>Edit the selection's colours in place — text, fill, border (while unlocked)</td></tr>
 <tr><td><span class="kbd">F</span></td><td>Find element</td></tr>
 <tr><td><span class="kbd">S</span></td><td>Tailwind xray</td></tr>
 <tr><td><span class="kbd">O</span></td><td>DS components</td></tr>
@@ -230,10 +231,10 @@ Loupe
 <tr><td><span class="kbd">Space</span></td><td>Pause / resume</td></tr>
 <tr><td><span class="kbd">Q</span></td><td>Shutdown current tab</td></tr>
 <tr><td><span class="kbd">H</span></td><td>Hide dock</td></tr>
-<tr><td><span class="kbd">↑</span> / <span class="kbd">↓</span></td><td>Walk to parent / child element</td></tr>
+<tr><td><span class="kbd">↑</span> / <span class="kbd">↓</span></td><td>Walk to parent / child element — or move the element while editing (Shift: ×10)</td></tr>
 <tr><td><span class="kbd">?</span></td><td>Show this list</td></tr>
 <tr><td><span class="kbd">⌘Z</span> / <span class="kbd">⇧⌘Z</span></td><td>Undo / redo a nudge — on the page or in the panel</td></tr>
-<tr><td><span class="kbd">⌘C</span> / <span class="kbd">⌘V</span> / <span class="kbd">⌘⌫</span></td><td>In Nudge: duplicate the selected element, or remove it</td></tr>
+<tr><td><span class="kbd">⌘C</span> / <span class="kbd">⌘V</span> / <span class="kbd">⌘⌫</span></td><td>While editing: duplicate the selected element, or remove it</td></tr>
 <tr><td><span class="kbd">Esc</span></td><td>Exit mode</td></tr>
 </tbody>
 </table>
@@ -266,6 +267,7 @@ Loupe
 <tr><td>Accessibility audit</td><td class="dash">—</td><td class="chk">Yes</td><td class="chk">Yes</td></tr>
 <tr><td>AI fix suggestions (your own API key)</td><td class="dash">—</td><td class="chk">Yes</td><td class="chk">Yes</td></tr>
 <tr><td>QA report export</td><td class="dash">—</td><td class="chk">Yes</td><td class="chk">Yes</td></tr>
+<tr><td>Design-system lint audit</td><td class="dash">—</td><td class="chk">Yes</td><td class="chk">Yes</td></tr>
 <tr><td>Up to 10 people, no per-person accounts</td><td class="dash">—</td><td class="dash">—</td><td class="chk">Yes</td></tr>
 <tr><td>Hosted profile auto-updates &amp; team reporting</td><td class="dash">—</td><td class="dash">—</td><td class="chk">Yes</td></tr>
 <tr><td>Priority email support</td><td class="dash">—</td><td class="dash">—</td><td class="chk">Yes</td></tr>
@@ -303,6 +305,7 @@ Loupe
 <a href="#pricing">Pricing</a>
 <a href="https://chromewebstore.google.com/detail/jimbpokakmblllmmccphenoghbcldofk/reviews">Rate Loupe</a>
 <a href="/changelog/">Changelog</a>
+<a href="/docs/profiles/">Team profile docs</a>
 <a href="/loupe/privacy/">Privacy</a>
 <a href="/loupe/terms/">Terms</a>
 </nav>
