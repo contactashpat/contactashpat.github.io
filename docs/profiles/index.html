@@ -198,6 +198,41 @@
 }</code></pre>
   <p>Hard limits enforced at import: <strong>512&nbsp;KB</strong> file size, <strong>2,000 tokens</strong>, <code>schemaVersion: 1</code>. Validation errors are shown verbatim in the import UI, so a broken file fails loudly, not silently.</p>
 
+  <h2>Fastest start: generate it with AI</h2>
+  <p>Paste the prompt below into any capable AI assistant (Claude, ChatGPT, your editor's agent), then paste your design-token source after it &mdash; CSS custom properties, a Tailwind config, a style-dictionary/tokens.json export, or a written style guide. You get a complete profile JSON back; import it in the <strong>DS</strong> tab and Loupe validates it, naming the first problem if there is one. The prompt tells the AI to <em>ask</em> rather than invent when your material is missing something (dark values are the usual gap).</p>
+  <p><button id="copy-ai-prompt" onclick="navigator.clipboard.writeText(document.getElementById('ai-prompt-text').textContent).then(function(){var b=document.getElementById('copy-ai-prompt');b.textContent='Copied \u2014 paste into your AI';setTimeout(function(){b.textContent='Copy the prompt';},2500);})" style="font: inherit; padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--fg); cursor: pointer;">Copy the prompt</button></p>
+  <pre style="max-height: 420px; overflow: auto;"><code id="ai-prompt-text">You are generating a Design System Profile for Loupe, a Chrome extension for pixel-perfect UI inspection. I will paste my design system&#x27;s source material below (CSS custom properties, a Tailwind config, a style-dictionary / tokens.json export, or a written style guide). Produce ONE valid JSON file following this schema exactly.
+
+Required top-level fields:
+- &quot;schemaVersion&quot;: 1
+- &quot;id&quot;: short, stable, kebab-case (it is the storage key - never change it between versions)
+- &quot;name&quot;: human display name
+- &quot;generatedAt&quot;: ISO 8601 timestamp
+- &quot;tokens&quot;: array - see below
+- &quot;lint&quot;: array - see below
+
+Optional top-level fields (include only when my material supports them):
+- &quot;detect&quot;: { &quot;cssVars&quot;: [one or two custom properties unique to this system], &quot;slotAttr&quot;: &quot;...&quot; }
+- &quot;components&quot;: { &quot;slotAttr&quot;: &quot;&lt;the attribute every component part renders, e.g. data-part&gt;&quot;, &quot;variantAttrs&quot;: [&quot;data-size&quot;, ...], &quot;runtimeAttrs&quot;: [&quot;data-state&quot;, ...attrs added by libs like Radix] }
+- &quot;themeAxes&quot;: [ { &quot;id&quot;, &quot;label&quot;, &quot;kind&quot;: &quot;class&quot; or &quot;attr&quot;, &quot;name&quot;, optional &quot;values&quot;: [...], and &quot;darkDiff&quot;: true on the dark-mode axis } ]
+- &quot;varNamespaces&quot;: { &quot;semantic&quot;: [&quot;--prefix-&quot;...], &quot;primitive&quot;: [&quot;--prefix-&quot;...] }
+- &quot;typography&quot;: { &quot;utilities&quot;: [&quot;label-&quot;, &quot;heading-&quot;...], &quot;discouragedTextSizes&quot;: true or false }
+- &quot;ignoreSelectors&quot;: [&quot;#third-party-widget&quot;, ...subtrees lint should skip]
+
+tokens[] - one entry per design token:
+{ &quot;cssVar&quot;: &quot;--x-bg-surface&quot; or null, &quot;utility&quot;: &quot;bg-surface&quot; or null, &quot;category&quot;: &quot;bg&quot; | &quot;text&quot; | &quot;stroke&quot; | &quot;icon&quot; | ..., &quot;role&quot;: optional, &quot;state&quot;: optional, &quot;light&quot;: &quot;#hex&quot;, &quot;dark&quot;: &quot;#hex&quot;, &quot;description&quot;: optional }
+Rules: every entry needs cssVar OR utility (both is best). For colour tokens ship BOTH resolved hexes - they power exact colour-to-token matching. Deprecated aliases instead look like: { &quot;cssVar&quot;: null, &quot;utility&quot;: &quot;&lt;old name&gt;&quot;, &quot;category&quot;: &quot;legacy&quot;, &quot;light&quot;: null, &quot;dark&quot;: null, &quot;deprecated&quot;: true, &quot;replacement&quot;: { &quot;utility&quot;: &quot;&lt;new name&gt;&quot; } }.
+
+lint[] - include ALL seven rules, each { &quot;id&quot;, &quot;severity&quot;: &quot;error&quot; or &quot;warning&quot;, &quot;enabled&quot;: true or false }; disable rather than omit the ones that do not apply: raw-color, primitive-token, raw-spacing, density-arbitrary, hsl-var-wrap, deprecated-alias, raw-text-size.
+
+Process:
+1. If anything essential is missing from my material (dark-theme values, utility class names, unclear var prefixes), ASK me before guessing. Never invent hex values.
+2. Derive every token from my material only - an honest 40-token profile beats a padded 200.
+3. Output the complete JSON in a single code block and nothing else.
+
+My design system material:
+[PASTE YOUR CSS VARIABLES / TAILWIND CONFIG / TOKENS EXPORT / STYLE GUIDE HERE]</code></pre>
+
   <h2>2. Field reference</h2>
 
   <h3><code>id</code>, <code>name</code>, <code>generatedAt</code></h3>
@@ -304,7 +339,7 @@
     <li><strong><code>origins</code></strong> — auto-bound when the profile is imported or refreshed; developers import once and every listed app origin is covered (their manual bindings always win).</li>
     <li><strong><code>updateUrl</code></strong> (https only) — Loupe re-fetches the profile from here about once a day and on browser start, replacing the stored copy only when it validates, keeps the same <code>id</code>, and has a newer <code>generatedAt</code>. Publish the profile at this URL from your token pipeline and every install stays current with token releases.</li>
     <li><strong><code>reportWebhook</code></strong> (https only) — adds an explicit <strong>"Send to team"</strong> button after lint and dark-mode-diff runs. The result JSON (findings, page URL, profile id, extension version — never tokens or credentials) is POSTed to <em>your</em> endpoint, only on the user's click. Point it at anything that accepts JSON: a lambda, Splunk HEC, a spreadsheet hook.</li>
-    <li><strong><code>license</code></strong> — a signed org licence that unlocks Loupe Pro for everyone using this profile on your origins, with no individual accounts. <strong><a href="/#pricing">Buy self-serve at getloupe.org</a></strong> ($249 one-time, up to 50 people, instant delivery), or <a href="mailto:contact@getloupe.org?subject=Loupe%20Team%20Licensing">contact the developer</a> for enterprise licensing and invoicing. Embed the blob verbatim; it survives profile regeneration because the signature covers only the licence fields. Store-issued licences are a one-time purchase and do not expire; bespoke licences may carry a real expiry, after which Pro keeps working through a 14-day grace period. The <code>seats</code> field is honour-system and store licences carry 50, matching what the tier is sold as. To replace a licence, swap the profile's <code>license</code> field for the new blob (hosted profiles can roll it out automatically).</li>
+    <li><strong><code>license</code></strong> — a signed org licence that unlocks Loupe Pro for everyone using this profile on your origins, with no individual accounts. <strong><a href="/#pricing">Buy self-serve at getloupe.org</a></strong> ($249/year, up to 10 people &mdash; the signed licence file is issued the moment payment completes), or <a href="mailto:contact@getloupe.org?subject=Loupe%20Team%20Licensing">contact the developer</a> for enterprise licensing and invoicing. Embed the blob verbatim; it survives profile regeneration because the signature covers only the licence fields. Store-issued licences run for one year from purchase; after expiry, Pro keeps working through a 14-day grace period with a renewal warning, so a lapsed renewal never bricks the team mid-sprint. The <code>seats</code> field is honour-system and store licences carry 10, matching what the tier is sold as. To replace a licence, swap the profile's <code>license</code> field for the new blob (hosted profiles can roll it out automatically).</li>
   </ul>
 
   <h2>5. Distributing and updating</h2>
